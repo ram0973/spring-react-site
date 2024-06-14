@@ -1,0 +1,85 @@
+package ram0973.web.config;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ram0973.web.exceptions.EmailAlreadyInUseException;
+import ram0973.web.exceptions.NoSuchEntityException;
+import ram0973.web.exceptions.dto.ApiExceptionResponseDto;
+import ram0973.web.exceptions.dto.FieldViolation;
+import ram0973.web.exceptions.dto.ValidationExceptionResponseDto;
+
+import java.util.List;
+
+@RestControllerAdvice
+@Slf4j
+public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+        MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, WebRequest request) {
+        List<FieldViolation> fieldViolations = ex.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(o -> new FieldViolation(o.getField(), o.getDefaultMessage()))
+            .toList();
+        return new ResponseEntity<>(
+            new ValidationExceptionResponseDto(
+                getUrl(request), status, fieldViolations
+            ), status
+        );
+    }
+
+    // HttpStatus.resolve(status.value())
+
+    @ExceptionHandler(NoSuchEntityException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    protected ApiExceptionResponseDto handleThereIsNoSuchEntityException(Exception ex, WebRequest request) {
+        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EmailAlreadyInUseException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    protected ApiExceptionResponseDto handleEmailAlreadyInUseException(Exception ex, WebRequest request) {
+        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    protected ApiExceptionResponseDto handleBadCredentialsException(Exception ex, WebRequest request) {
+        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    protected ApiExceptionResponseDto handleMethodArgumentTypeMismatchException(Exception ex, WebRequest request) {
+        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    protected ApiExceptionResponseDto handleEmptyResultDataAccessException(Exception ex, WebRequest request) {
+        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    private String getUrl(WebRequest request) {
+        return request.getDescription(false).replace("uri=", "");
+    }
+}

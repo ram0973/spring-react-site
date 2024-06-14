@@ -1,0 +1,37 @@
+---
+# This docker-compose file is ignoring in production, but been using
+# in development with: $ docker compose up
+
+services:
+
+  redis-service:
+    container_name: redis-service
+    image: redis:7.2.5
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=password
+      - REDIS_PORT=6379
+
+  postgresql-service:
+    container_name: springapp-postgres-dev
+    env_file:
+      - ./src/main/resources/.env
+    ports:
+      - "5432:5432"
+    build:
+      context: .
+      dockerfile: ./docker/postgresql/Dockerfile
+
+  pgadmin4-service:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pg@pg.pg
+      PGADMIN_DEFAULT_PASSWORD: pg
+      PGADMIN_LISTEN_PORT: 8000
+    depends_on:
+      - postgresql-service
