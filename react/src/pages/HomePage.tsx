@@ -1,8 +1,8 @@
-import {Persons} from "../features/person/usePersonTable.tsx";
+import PersonCrud from "../features/person/PersonCrud.tsx";
 
 const HomePage = () => {
   return (
-    <Persons/>
+    <PersonCrud/>
   );
 };
 
