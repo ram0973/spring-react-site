@@ -90,7 +90,7 @@ function Persons() {
           <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
           <Tbody>
             {data.person.map((person: Person) => (
-              <>
+
                 <Tr key={person.id}>
                   <Td>{person.id}</Td>
                   <Td><HStack><Avatar size="sm" name={person.email}/><Text>{person.email}</Text></HStack></Td>
@@ -117,8 +117,9 @@ function Persons() {
                       </ModalContent>
                     </Modal>
                     <ViewIcon style={{cursor: 'pointer'}}/>
-                  </HStack></Td></Tr>
-              </>
+                  </HStack></Td>
+                </Tr>
+
             ))}
           </Tbody>
           <Tfoot><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th></Th></Tr></Tfoot>
