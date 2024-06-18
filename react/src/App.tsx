@@ -1,11 +1,11 @@
 import './App.css'
-import RegisterForm from "./features/registration/RegisterForm.tsx";
+import HomePage from "./pages/HomePage.tsx";
 
 function App() {
 
   return (
-    <RegisterForm/>
-  )
+    <HomePage/>
+  );
 }
 
-export default App
+export default App;

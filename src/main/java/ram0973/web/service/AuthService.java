@@ -5,8 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +18,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import ram0973.web.dto.LoginRequestDto;
 import ram0973.web.dto.RegisterRequestDto;
-import ram0973.web.exceptions.EmailAlreadyInUseException;
+import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.model.Person;
 import ram0973.web.model.Role;
 import ram0973.web.repository.PersonRepository;
@@ -37,28 +35,25 @@ public class AuthService {
     private final PersonRepository personRepository;
 
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+    private final PersonService personService;
 
     @Value("${custom.admin.email}")
     private String adminEmail;
 
     public Person register(RegisterRequestDto dto) {
         String email = dto.email().trim();
-        Optional<Person> personExists = personRepository.findByEmail(email);
+        Optional<Person> personExists = personRepository.findByEmailIgnoreCase(email);
         if (personExists.isPresent()) {
-            throw new EmailAlreadyInUseException("Person with such email: " + email + " already exists");
+            throw new EntityAlreadyExistsException("Person already exist with such email: " + email);
         }
         Person person = new Person();
         person.setEmail(email);
         person.setPassword(passwordEncoder.encode(dto.password()));
-        person.setNonLocked(true);
-        person.setAccountNonExpired(true);
-        person.setCredentialsNonExpired(true);
-        person.setEnabled(true);
         person.addRole(Role.ROLE_USER);
         if (adminEmail.equals(email)) {
             person.addRole(Role.ROLE_ADMIN);
         }
-        personRepository.save(person);
+        personService.savePerson(person);
         return person;
     }
 
@@ -70,14 +65,13 @@ public class AuthService {
      * @param dto      is a record. It accepts email and password
      * @param request  of type HttpServletRequest
      * @param response of type HttpServletResponse
-     * @return String
      **/
-    public Authentication login(LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
+    public void login(LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
             dto.email().trim(), dto.password());
         Authentication authentication = this.authManager.authenticate(token);
         if (!authentication.isAuthenticated()) {
-            throw new BadCredentialsException("Bad credentials");
+            throw new BadCredentialsException("Invalid username or password");
         }
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -86,7 +80,6 @@ public class AuthService {
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
 
-        return authentication;
     }
 
     public void logout(@NotNull Authentication authentication, HttpServletRequest request, HttpServletResponse response) {

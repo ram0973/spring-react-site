@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ram0973.web.exceptions.EmailAlreadyInUseException;
+import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.exceptions.dto.ApiExceptionResponseDto;
 import ram0973.web.exceptions.dto.FieldViolation;
@@ -51,7 +51,7 @@ public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
         return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(EmailAlreadyInUseException.class)
+    @ExceptionHandler(EntityAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     protected ApiExceptionResponseDto handleEmailAlreadyInUseException(Exception ex, WebRequest request) {

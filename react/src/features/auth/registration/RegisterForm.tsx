@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Center,
   Flex,
@@ -13,15 +14,10 @@ import {
   VStack
 } from "@chakra-ui/react";
 import z from 'zod';
-import appLogo from '../../assets/logo.svg'
+import appLogo from '../../../assets/logo.svg'
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import publicApi from "../../config/api-client.ts";
-
-interface Credentials {
-  email: string;
-  password: string;
-}
+import {Credentials} from "../models/models.ts";
 
 const registerFormSchema = z
   .object({
@@ -41,7 +37,16 @@ const registerFormSchema = z
 
 type RegisterFormData = z.infer<typeof registerFormSchema>;
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  isError: boolean;
+  isSuccess: boolean;
+  isLoading: boolean;
+  errorMessage?: string;
+  onFormSubmit: (credentials: Credentials) => void;
+  onLinkClick: () => void;
+}
+
+const RegisterForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, onLinkClick}: RegisterFormProps) => {
 
   const {
     register,
@@ -52,22 +57,25 @@ const RegisterForm = () => {
     resolver: zodResolver(registerFormSchema)
   });
 
-  const handleFormSubmit = (credentials: Credentials) => {
-    console.log('credentials', credentials);
-    publicApi.post('/api/v1/auth/register', credentials)
-      .then(()=>console.log("Successfully registered"))
-      .catch(err => console.log(err));
-  }
-
   return (
     <Flex direction="row" flex="1" align="center" justify="center" backgroundColor="gray.100">
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <form onSubmit={handleSubmit(onFormSubmit)}>
         <Center maxW="lg" w="lg" shadow="lg" backgroundColor="white" rounded='md'>
           <Stack spacing="2" pt="16" pb="16">
             <Center pb="8">
               <VStack>
                 <Image boxSize="64px" src={appLogo}/>
                 <Heading fontSize="2xl">Зарегистрируйте свой аккаунт</Heading>
+                {isSuccess &&
+                  <Box backgroundColor={'green.200'} p={'16px'} borderRadius={'8px'}>
+                    <Heading fontSize={'2xm'} color={'green.700'}>Аккаунт успешно зарегистрирован</Heading>
+                  </Box>
+                }
+                {isError &&
+                  <Box backgroundColor={'red.200'} p={'16px'} borderRadius={'8px'}>
+                    <Heading fontSize={'2xm'} color={'red.700'}>{errorMessage}</Heading>
+                  </Box>
+                }
               </VStack>
             </Center>
             <FormControl isInvalid={!!errors.email}>
@@ -86,10 +94,10 @@ const RegisterForm = () => {
               <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
             </FormControl>
             <Stack spacing="6" pt="4">
-              <Button type="submit" colorScheme="twitter" variant="solid">
+              <Button type="submit" colorScheme="twitter" variant="solid" isDisabled={isLoading}>
                 Зарегистрировать аккаунт
               </Button>
-              <Link color="twitter.500">
+              <Link color="twitter.500" onClick={onLinkClick}>
                 Аккаунт уже зарегистрирован?
               </Link>
             </Stack>

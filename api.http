@@ -20,13 +20,6 @@ Content-Type: application/json
 ### Logout
 POST http://localhost:8080/api/v1/auth/logout
 
-### Profile
-GET http://localhost:8080/api/v1/auth/profile
-
-### User
-GET http://localhost:8080/api/v1/person/user
-Content-Type: application/json
-
-### Admin
-GET http://localhost:8080/api/v1/person/admin
+### Persons
+GET http://localhost:8080/api/v1/person/all
 Content-Type: application/json

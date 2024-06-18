@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
@@ -18,7 +17,6 @@ import java.time.LocalDateTime;
 // https://stackoverflow.com/a/6084701/548473
 @Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuperBuilder
 public abstract class BaseModel implements Persistable<Integer> {
 
     @Id

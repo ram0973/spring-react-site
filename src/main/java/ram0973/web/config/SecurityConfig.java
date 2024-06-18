@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/", "/api/v1/auth/info", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/auth/profile").permitAll()
                 .requestMatchers(HttpMethod.POST, "/error", "/api/v1/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/person/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                 //
                 //.anyRequest().rememberMe()
                 .anyRequest().authenticated()
