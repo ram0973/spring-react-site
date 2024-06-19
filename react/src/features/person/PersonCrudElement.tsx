@@ -12,19 +12,15 @@ import {
 } from "@chakra-ui/react";
 import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
 import {Person} from "../auth/models/models.ts";
-import React from "react";
 import publicApi from "../../config/api-client.ts";
 
-const PersonCrudElement = (person: Person) => {
+const PersonCrudElement = (element: Person, onShowMessage: (() => void)) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
-
-
-
 
   const onDeletePersonHandle = async (id: number) => {
     const response = await publicApi.delete(`/api/v1/person/${id}`);
     if (response.status == 200) {
-      showMessage();
+      onShowMessage();
     }
   }
 
@@ -32,13 +28,12 @@ const PersonCrudElement = (person: Person) => {
     const response = publicApi.patch(`/api/v1/person/${id}/enable`, enabled);
   }
 
-
   return (
-    <Tr key={person.id}>
-      <Td>{person.id}</Td>
-      <Td><HStack><Avatar size="sm" name={person.email}/><Text>{person.email}</Text></HStack></Td>
-      <Td><Switch id='isEnabled' isChecked={person.enabled} onClick={() => {
-        onChangeEnabledPersonHandle(person.id, person.enabled);
+    <Tr key={element.id}>
+      <Td>{element.id}</Td>
+      <Td><HStack><Avatar size="sm" name={element.email}/><Text>{element.email}</Text></HStack></Td>
+      <Td><Switch id='isEnabled' isChecked={element.enabled} onClick={() => {
+        onChangeEnabledPersonHandle(element.id, element.enabled);
       }} style={{cursor: 'pointer'}}/></Td>
       <Td><HStack>
         <EditIcon style={{cursor: 'pointer'}}/>
@@ -54,7 +49,7 @@ const PersonCrudElement = (person: Person) => {
             <ModalFooter>
               <Button colorScheme='blue' mr={3} onClick={onClose}>Cancel</Button>
               <Button colorScheme='red' onClick={() => {
-                onDeletePersonHandle(person.id);
+                onDeletePersonHandle(element.id);
               }}>Delete</Button>
             </ModalFooter>
           </ModalContent>

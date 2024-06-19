@@ -1,12 +1,14 @@
+import {boolean, number, string} from "yup";
+
 export interface Credentials {
   email: string;
   password: string;
 }
 
 export interface Person {
-  id: number;
-  email: string;
-  enabled: boolean;
+  id: number,
+  email: string,
+  enabled: boolean,
 }
 
 export interface AxiosErrorResponseData {
