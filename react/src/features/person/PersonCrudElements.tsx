@@ -26,7 +26,7 @@ const PersonCrudElements = () => {
     data.map((element: Person) => {
         return (
           <>
-            <PersonCrudElement element={element}/>
+            <PersonCrudElement element={element} key={element.id}/>
           </>
         )
       }

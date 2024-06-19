@@ -1,23 +1,23 @@
-import React from 'react';
 import {Box, Button, ButtonGroup, Flex, Heading, Spacer} from "@chakra-ui/react";
-import LandingLayout from "../../to_see/LandingLayout.tsx";
+import {ReactIcon} from "@chakra-ui/icons";
 
-const MainMenu = () => {
+const NavigationBar = () => {
+
   return (
     <>
-      <Flex minWidth='max-content' alignItems='center' gap='2'>
+      <Flex direction="row" minWidth='max-content' alignItems='center' gap='2'>
         <Box p='2'>
-          <Heading size='md'>Chakra App</Heading>
+          <Heading size='md'><ReactIcon style={{cursor: 'pointer'}}/>Home</Heading>
         </Box>
         <Spacer/>
         <ButtonGroup gap='2'>
+          <Button colorScheme='teal'>Admin</Button>
           <Button colorScheme='teal'>Sign Up</Button>
           <Button colorScheme='teal'>Log in</Button>
         </ButtonGroup>
       </Flex>
-      <LandingLayout props={MainMenu}/>
     </>
   );
 };
 
-export default MainMenu;
+export default NavigationBar;

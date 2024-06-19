@@ -55,7 +55,7 @@ const PersonCrudElement = ({element}: PersonCrudElementProps) => {
             <ModalHeader>Delete Person</ModalHeader>
             <ModalCloseButton/>
             <ModalBody>
-              Are you sure to delete {element.id}? You can just disable it.
+              Are you sure to delete user {element.email}? You can just disable it.
             </ModalBody>
             <ModalFooter>
               <Button colorScheme='blue' mr={3} onClick={onClose}>Cancel</Button>
