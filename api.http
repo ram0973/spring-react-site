@@ -8,6 +8,15 @@ Content-Type: application/json
 }
 
 
+### Register user
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@yabbarov.ru",
+  "password": "password"
+}
+
 ### Login
 POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
