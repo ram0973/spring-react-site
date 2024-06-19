@@ -1,4 +1,5 @@
 import {Box, Button, ButtonGroup, Flex, Heading, Spacer} from "@chakra-ui/react";
+import {Link} from "react-router-dom";
 import {ReactIcon} from "@chakra-ui/icons";
 
 const NavigationBar = () => {
@@ -13,7 +14,7 @@ const NavigationBar = () => {
         <ButtonGroup gap='2'>
           <Button colorScheme='teal'>Admin</Button>
           <Button colorScheme='teal'>Sign Up</Button>
-          <Button colorScheme='teal'>Log in</Button>
+          <Button colorScheme='teal'>Login</Button>
         </ButtonGroup>
       </Flex>
     </>
