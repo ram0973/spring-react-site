@@ -45,10 +45,10 @@ public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
     // HttpStatus.resolve(status.value())
 
     @ExceptionHandler(NoSuchEntityException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     protected ApiExceptionResponseDto handleThereIsNoSuchEntityException(Exception ex, WebRequest request) {
-        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(EntityAlreadyExistsException.class)
