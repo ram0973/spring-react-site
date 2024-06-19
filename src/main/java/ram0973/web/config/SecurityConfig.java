@@ -27,7 +27,7 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http
             .sessionManagement(o -> o
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             )
             .authorizeHttpRequests(o -> o
                 .requestMatchers(HttpMethod.GET, "/", "/api/v1/auth/info", "/error").permitAll()

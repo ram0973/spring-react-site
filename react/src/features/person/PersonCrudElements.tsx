@@ -1,30 +1,8 @@
-import {
-  Avatar,
-  Button,
-  HStack,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Switch,
-  Td,
-  Text,
-  Tr,
-  useDisclosure
-} from "@chakra-ui/react";
-
-import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
+import {Td, Tr} from "@chakra-ui/react";
 import {Person} from "../auth/models/models.ts";
 import publicApi from "../../config/api-client.ts";
 import {useQuery} from "@tanstack/react-query";
 import PersonCrudElement from "./PersonCrudElement.tsx";
-
-// interface PersonCrudElementsProps {
-//   element: Person
-// }
 
 const PersonCrudElements = () => {
 

@@ -28,6 +28,7 @@ const PersonCrudElement = ({element}: PersonCrudElementProps) => {
 
   const onDeletePersonHandle = async (id: number) => {
     const response = await publicApi.delete(`/api/v1/person/${id}`);
+    window.location.reload(); //TODO: BAD THING
     if (response.status == 200) {
     }
   }

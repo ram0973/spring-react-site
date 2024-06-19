@@ -16,6 +16,8 @@ import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.model.Person;
 import ram0973.web.service.PersonService;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,8 +35,9 @@ public class PersonController {
         @RequestParam(defaultValue = "10") int size,
         @RequestParam(defaultValue = "id,desc") String[] sort
     ) {
-        PagedPersonsResponseDto pagedPersonsResponseDTO = personService.findAll(page, size, sort).orElseThrow(
-            () -> new NoSuchEntityException("No such Persons"));
+        PagedPersonsResponseDto pagedPersonsResponseDTO = personService.findAll(page, size, sort).orElse(
+            new PagedPersonsResponseDto(Collections.emptyList(), 0, 0, 0)
+        );
         return ResponseEntity.ok(pagedPersonsResponseDTO);
     }
 
