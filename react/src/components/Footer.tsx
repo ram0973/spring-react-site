@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <>
-
+      Footer (C) 2025
     </>
   );
 };
