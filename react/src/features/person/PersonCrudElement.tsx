@@ -6,10 +6,10 @@ import {
   ModalContent, ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Switch,
-  Td,
+  Switch, Td,
   Text, Tr, useDisclosure
 } from "@chakra-ui/react";
+
 import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
 import {Person} from "../auth/models/models.ts";
 import publicApi from "../../config/api-client.ts";
@@ -18,7 +18,7 @@ interface PersonCrudElementsProps {
   element: Person
 }
 
-const PersonCrudElements = ({element}: PersonCrudElementsProps) => {
+const PersonCrudElement = ({element}: PersonCrudElementsProps) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   const onDeletePersonHandle = async (id: number) => {
@@ -64,4 +64,4 @@ const PersonCrudElements = ({element}: PersonCrudElementsProps) => {
   );
 }
 
-export default PersonCrudElements;
+export default PersonCrudElement;
