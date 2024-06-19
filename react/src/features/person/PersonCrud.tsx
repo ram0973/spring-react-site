@@ -1,6 +1,6 @@
 import {Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr} from "@chakra-ui/react";
 import {Person} from "../auth/models/models.ts";
-import PersonCrudElement from "./PersonCrudElement.tsx";
+import PersonCrudElements from "./PersonCrudElements.tsx";
 import {useQuery} from "@tanstack/react-query";
 import publicApi from "../../config/api-client.ts";
 import {useState} from "react";
@@ -27,22 +27,18 @@ const PersonCrud = (onShowMessage: () => void) => {
 
   return (
     <>
-      <TableContainer>
-        <Table variant='striped'>
-          <TableCaption>Users of this site</TableCaption>
-          <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
-          <Tbody>
-            {data.forEach((person: Person) => {
-              return (
-                <PersonCrudElement element={person} onShowMessage={onShowMessage}/>
-              )
-            })}
-          </Tbody>
-          <Tfoot>
-            <Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th></Th></Tr>
-          </Tfoot>
-        </Table>
-      </TableContainer>
+    <TableContainer>
+      <Table variant='striped'>
+        <TableCaption>Users of this site</TableCaption>
+        <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
+        <Tbody>
+          <PersonCrudElements element={data} />
+        </Tbody>
+      <Tfoot>
+        <Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th></Th></Tr>
+      </Tfoot>
+    </Table>
+    </TableContainer>
     </>
   );
 };

@@ -14,13 +14,17 @@ import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
 import {Person} from "../auth/models/models.ts";
 import publicApi from "../../config/api-client.ts";
 
-const PersonCrudElement = (element: Person, onShowMessage: (() => void)) => {
+interface PersonCrudElementsProps {
+  element: Person
+}
+
+const PersonCrudElements = ({element}: PersonCrudElementsProps) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   const onDeletePersonHandle = async (id: number) => {
     const response = await publicApi.delete(`/api/v1/person/${id}`);
     if (response.status == 200) {
-      onShowMessage();
+      //onShowMessage();
     }
   }
 
@@ -60,4 +64,4 @@ const PersonCrudElement = (element: Person, onShowMessage: (() => void)) => {
   );
 }
 
-export default PersonCrudElement;
+export default PersonCrudElements;
