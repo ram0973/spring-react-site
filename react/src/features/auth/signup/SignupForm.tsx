@@ -14,7 +14,6 @@ import {
   VStack
 } from "@chakra-ui/react";
 import z from 'zod';
-import appLogo from '../../../assets/logo.svg'
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Credentials} from "../models/models.ts";
@@ -46,7 +45,7 @@ interface RegisterFormProps {
   onLinkClick: () => void;
 }
 
-const RegisterForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, onLinkClick}: RegisterFormProps) => {
+const SignupForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, onLinkClick}: RegisterFormProps) => {
 
   const {
     register,
@@ -58,13 +57,13 @@ const RegisterForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit
   });
 
   return (
-    <Flex direction="row" flex="1" align="center" justify="center" backgroundColor="gray.100">
+    <Flex direction="row" flex="1" align="center" justify="center" backgroundColor="gray.100" p={10}>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <Center maxW="lg" w="lg" shadow="lg" backgroundColor="white" rounded='md'>
           <Stack spacing="2" pt="16" pb="16">
             <Center pb="8">
               <VStack>
-                <Image boxSize="64px" src={appLogo}/>
+                <Image boxSize="64px" src={"/react.svg"}/>
                 <Heading fontSize="2xl">Зарегистрируйте свой аккаунт</Heading>
                 {isSuccess &&
                   <Box backgroundColor={'green.200'} p={'16px'} borderRadius={'8px'}>
@@ -108,4 +107,4 @@ const RegisterForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit
   );
 };
 
-export default RegisterForm;
+export default SignupForm;

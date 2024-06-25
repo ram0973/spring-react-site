@@ -1,6 +1,6 @@
 import {Td, Tr} from "@chakra-ui/react";
 import {Person} from "../auth/models/models.ts";
-import publicApi from "../../config/api-client.ts";
+import publicApi from "../common/api-client.ts";
 import {useQuery} from "@tanstack/react-query";
 import PersonCrudElement from "./PersonCrudElement.tsx";
 

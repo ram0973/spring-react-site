@@ -1,5 +1,5 @@
 import {Person} from "../models/Person.ts";
-import publicApi from "../config/api-client.ts";
+import publicApi from "../../common/api-client.ts";
 
 export async function getPersons(page?: number): Promise<Person[]> {
   const offset = page ? (page - 1) * 10 : 0;

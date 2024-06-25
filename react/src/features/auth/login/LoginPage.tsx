@@ -23,7 +23,7 @@ const LoginPage = () => {
   }
 
   const handleNavigateToRegisterPage = () => {
-    navigate("/register");
+    navigate("/signup");
   }
 
   return (

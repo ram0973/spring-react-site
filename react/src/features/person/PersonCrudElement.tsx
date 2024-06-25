@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
 import {Person} from "../auth/models/models.ts";
-import publicApi from "../../config/api-client.ts";
+import publicApi from "../common/api-client.ts";
 import { useToast } from "@chakra-ui/toast";
 
 interface PersonCrudElementProps {
