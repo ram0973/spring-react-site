@@ -1,18 +1,19 @@
 import NavigationBar from "../components/NavigationBar.tsx";
 import Footer from "../components/Footer.tsx";
-import {Container, createStandaloneToast} from "@chakra-ui/react";
+import {Container} from "@chakra-ui/react";
+import {Outlet} from "react-router-dom";
 
-const BaseLayout = (props) => {
+const AdminLayout = (props) => {
 
   return (
     <>
       <Container maxW={"container.lg"}>
         <NavigationBar/>
-        {props.children}
+        <Outlet />
         <Footer/>
       </Container>
     </>
   )
 }
 
-export default BaseLayout;
+export default AdminLayout;

@@ -18,12 +18,15 @@ import {
 import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
 import {Person} from "../auth/models/models.ts";
 import publicApi from "../../config/api-client.ts";
+import { useToast } from "@chakra-ui/toast";
 
 interface PersonCrudElementProps {
   element: Person;
 }
 
 const PersonCrudElement = ({element}: PersonCrudElementProps) => {
+  const toast = useToast();
+
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   const onDeletePersonHandle = async (id: number) => {
@@ -36,6 +39,10 @@ const PersonCrudElement = ({element}: PersonCrudElementProps) => {
   const onChangeEnabledPersonHandle = async (id: number, enabled: boolean) => {
     const response = await publicApi.patch(`/api/v1/person/${id}/enable`, enabled);
     if (response.status == 200) {
+      toast({
+        title: "Success!",
+        description: "Successfully deleted user",
+      });
     }
   }
 

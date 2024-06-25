@@ -23,11 +23,9 @@ const PersonCrudElements = () => {
   }
 
   return (
-    data.map((element: Person) => {
+    data.map((element: Person, index: number) => {
         return (
-          <>
-            <PersonCrudElement element={element} key={element.id}/>
-          </>
+          <PersonCrudElement element={element} key={index}/>
         )
       }
     )

@@ -1,33 +1,70 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import {ChakraProvider, createStandaloneToast} from '@chakra-ui/react'
+import {ChakraProvider} from '@chakra-ui/react'
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {BrowserRouter, RouterProvider} from "react-router-dom";
-import routes from "./routing/routes.tsx";
-import BaseLayout from "./layouts/BaseLayout.tsx";
+//import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+
 
 const queryClient = new QueryClient();
-const {ToastContainer, toast} = createStandaloneToast()
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <FrontLayout/>,
+//     errorElement: <ErrorPage />,
+//     children: [
+//       {
+//         path: "/persons/:personId",
+//         element: <PersonEditPage />,
+//       },
+//       {
+//         path: "login",
+//         element: <LoginPage/>
+//       },
+//       {
+//         path: "register",
+//         element: <RegisterPage/>
+//       },
+//     ],
+//   },
+//   {
+//     path: "/admin",
+//     element: <AdminLayout/>,
+//     errorElement: <ErrorPage />,
+//     children: [
+//       {
+//         path: "persons/:personId",
+//         element: <PersonEditPage />,
+//       },
+//       {
+//         path: "person-table",
+//         element: <PersonCrud/>
+//       }
+//     ],
+//   },
+// ]);
+
+// Import the generated route tree
+import { routeTree } from './routeTree.gen'
+
+// Create a new router instance
+const router = createRouter({ routeTree })
+
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {/*<BrowserRouter >*/}
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider>
-          <BaseLayout>
-            <ToastContainer/>
-            <RouterProvider router={routes}/>
-          </BaseLayout>
-        </ChakraProvider>
-      </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <RouterProvider router={router}/>
+      </ChakraProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 )
-
-toast({
-  title: 'An error occurred.',
-  description: 'Unable to create user account.',
-  status: 'error',
-  duration: 9000,
-  isClosable: true,
-})

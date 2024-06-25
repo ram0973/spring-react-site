@@ -13,8 +13,8 @@ const NavigationBar = () => {
         <Spacer/>
         <ButtonGroup gap='2'>
           <Button colorScheme='teal'>Admin</Button>
-          <Button colorScheme='teal'>Sign Up</Button>
-          <Button colorScheme='teal'>Login</Button>
+          <Link to={"/register"}><Button colorScheme='teal'>Sign Up</Button></Link>
+          <Link to={"/login"}><Button colorScheme='teal'>Login</Button></Link>
         </ButtonGroup>
       </Flex>
     </>
