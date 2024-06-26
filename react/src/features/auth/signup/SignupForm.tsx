@@ -16,20 +16,21 @@ import {
 import z from 'zod';
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Credentials} from "../models/models.ts";
+
+import {Credentials} from "../model/Credentials.ts";
 
 const registerFormSchema = z
   .object({
-    email: z.string().email("Невалидный email"),
-    password: z.string().min(8, "Пароль должен содержать минимум 8 символов"),
-    confirmPassword: z.string().min(8, "Пароли должны совпадать"),
+    email: z.string().email("Invalid email"),
+    password: z.string().min(8, "Password must contain at least 8 symbols"),
+    confirmPassword: z.string().min(8, "Passwords must match"),
   })
   .refine(
     (values) => {
       return values.password === values.confirmPassword;
     },
     {
-      message: "Пароли не совпадают",
+      message: "Passwords mismatch",
       path: ["confirmPassword"]
     }
   );
@@ -64,10 +65,10 @@ const SignupForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, 
             <Center pb="8">
               <VStack>
                 <Image boxSize="64px" src={"/react.svg"}/>
-                <Heading fontSize="2xl">Зарегистрируйте свой аккаунт</Heading>
+                <Heading fontSize="2xl">Please sign up</Heading>
                 {isSuccess &&
                   <Box backgroundColor={'green.200'} p={'16px'} borderRadius={'8px'}>
-                    <Heading fontSize={'2xm'} color={'green.700'}>Аккаунт успешно зарегистрирован</Heading>
+                    <Heading fontSize={'2xm'} color={'green.700'}>You successfully signed up</Heading>
                   </Box>
                 }
                 {isError &&
@@ -78,26 +79,26 @@ const SignupForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, 
               </VStack>
             </Center>
             <FormControl isInvalid={!!errors.email}>
-              <FormLabel>Электронная почта</FormLabel>
-              <Input id="email" type="email" placeholder="Введите электронную почту" {...register('email')}/>
+              <FormLabel>Email</FormLabel>
+              <Input id="email" type="email" placeholder="Enter your email" {...register('email')}/>
               <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={!!errors.password}>
-              <FormLabel>Пароль</FormLabel>
+              <FormLabel>Password</FormLabel>
               <Input id="password" type="password" placeholder="********"  {...register('password')}/>
               <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={!!errors.confirmPassword}>
-              <FormLabel>Подтвердите пароль</FormLabel>
+              <FormLabel>Repeat password</FormLabel>
               <Input id="confirmPassword" type="password" placeholder="********"  {...register('confirmPassword')}/>
               <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
             </FormControl>
             <Stack spacing="6" pt="4">
               <Button type="submit" colorScheme="twitter" variant="solid" isDisabled={isLoading}>
-                Зарегистрировать аккаунт
+                Sign up
               </Button>
               <Link color="twitter.500" onClick={onLinkClick}>
-                Аккаунт уже зарегистрирован?
+                Already signed up?
               </Link>
             </Stack>
           </Stack>

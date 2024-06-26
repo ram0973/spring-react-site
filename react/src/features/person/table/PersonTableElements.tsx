@@ -1,10 +1,10 @@
 import {Td, Tr} from "@chakra-ui/react";
-import {Person} from "../auth/models/models.ts";
-import publicApi from "../common/api-client.ts";
+import {Person} from "../../auth/model/Person.ts";
+import publicApi from "../../common/api-client.ts";
 import {useQuery} from "@tanstack/react-query";
-import PersonCrudElement from "./PersonCrudElement.tsx";
+import PersonTableElement from "./PersonTableElement.tsx";
 
-const PersonCrudElements = () => {
+const PersonTableElements = () => {
 
   const {isPending, isError, data, error} = useQuery({
     queryKey: ['persons'],
@@ -25,11 +25,11 @@ const PersonCrudElements = () => {
   return (
     data.map((element: Person, index: number) => {
         return (
-          <PersonCrudElement element={element} key={index}/>
+          <PersonTableElement element={element} key={index}/>
         )
       }
     )
   )
 }
 
-export default PersonCrudElements;
+export default PersonTableElements;

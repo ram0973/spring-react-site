@@ -17,12 +17,13 @@ import z from 'zod';
 
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Credentials} from "../models/models.ts";
+
+import {Credentials} from "../model/Credentials.ts";
 
 const loginFormSchema = z
   .object({
-    email: z.string().email("Невалидный email"),
-    password: z.string().min(8, "Пароль должен содержать минимум 8 символов"),
+    email: z.string().email("Invalid email"),
+    password: z.string().min(8, "Password must contain at least 8 symbols"),
   });
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
@@ -53,9 +54,9 @@ const LoginForm = ({isError, isLoading, errorMessage, onFormSubmit, onLinkClick}
         <Center maxW="lg" w="lg" shadow="lg" backgroundColor="white" rounded='md'>
           <Stack spacing="2" pt="16" pb="16">
             <Center pb="8">
-              <VStack width={"lg"} ps={"16"} pe={"16"}>
+              <VStack>
                 <Image boxSize="64px" src={"/react.svg"}/>
-                <Heading fontSize="2xl">Войдите в свой аккаунт</Heading>
+                <Heading fontSize="2xl">Please login</Heading>
                 {isError &&
                   <Box backgroundColor={'red.200'} p={'16px'} borderRadius={'8px'}>
                     <Heading fontSize={'2xm'} color={'red.700'}>{errorMessage}</Heading>
@@ -63,22 +64,22 @@ const LoginForm = ({isError, isLoading, errorMessage, onFormSubmit, onLinkClick}
                 }
               </VStack>
             </Center>
-            <FormControl isInvalid={!!errors.email}  width={"lg"} ps={"16"} pe={"16"}>
-              <FormLabel>Электронная почта</FormLabel>
-              <Input id="email" type="email" placeholder="Введите электронную почту" {...register('email')}/>
+            <FormControl isInvalid={!!errors.email}>
+              <FormLabel>Email</FormLabel>
+              <Input id="email" type="email" placeholder="Enter your email" {...register('email')}/>
               <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={!!errors.password}  width={"lg"} ps={"16"} pe={"16"}>
-              <FormLabel>Пароль</FormLabel>
-              <Input id="password" type="password" placeholder="********"  {...register('password')}/>
+            <FormControl isInvalid={!!errors.password}>
+              <FormLabel>Password</FormLabel>
+              <Input id="password" type="password" placeholder="********" {...register('password')}/>
               <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
             </FormControl>
-            <Stack spacing="6" pt="4"  width={"lg"} ps={"16"} pe={"16"}>
+            <Stack spacing="6" pt="4">
               <Button type="submit" colorScheme="twitter" variant="solid" isDisabled={isLoading}>
-                Войти в аккаунт
+                Login
               </Button>
               <Link color="twitter.500" onClick={onLinkClick}>
-                Аккаунт ещё не зарегистрирован?
+                Not signed up?
               </Link>
             </Stack>
           </Stack>

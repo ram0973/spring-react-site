@@ -1,4 +1,4 @@
-import {Person} from "../models/Person.ts";
+import {Person} from "../model/Person.ts";
 import publicApi from "../../common/api-client.ts";
 
 export async function getPersons(page?: number): Promise<Person[]> {

@@ -1,17 +1,17 @@
-import {Table, TableCaption, TableContainer, Tbody, Tfoot, Th, Thead, Tr} from "@chakra-ui/react";
-import PersonCrudElements from "./PersonCrudElements.tsx";
+import {Table, Heading, TableContainer, Tbody, Tfoot, Th, Thead, Tr} from "@chakra-ui/react";
+import PersonTableElements from "./PersonTableElements.tsx";
 import AlertSuccessMessage from "./AlertSuccessMessage.tsx";
 
-const PersonCrud = () => {
+const PersonTable = () => {
   return (
     <>
       <AlertSuccessMessage/>
+      <Heading size={"lg"}>Users</Heading>
       <TableContainer>
         <Table variant='striped'>
-          <TableCaption>Users of this site</TableCaption>
           <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
           <Tbody>
-            <PersonCrudElements/>
+            <PersonTableElements/>
           </Tbody>
           <Tfoot>
             <Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th></Th></Tr>
@@ -22,5 +22,5 @@ const PersonCrud = () => {
   );
 };
 
-export default PersonCrud;
+export default PersonTable;
 

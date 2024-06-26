@@ -1,13 +1,12 @@
 import Footer from "./Footer.tsx";
 import {Outlet} from "react-router-dom";
-import NavBar from "../components/HeaderOld.tsx";
 import "./layouts.css";
 import Header from "./Header.tsx";
 
-const FrontLayout = (props) => {
+const FrontLayout = () => {
   return (
     <div className="lg:container lg:mx-auto">
-      <Header/>
+      <Header />
       <Outlet/>
       <Footer/>
     </div>

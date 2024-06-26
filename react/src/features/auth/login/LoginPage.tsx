@@ -1,10 +1,12 @@
 import LoginForm from "./LoginForm.tsx";
 import {useLogin} from "./useLogin.ts";
-import {Credentials} from "../models/models.ts";
 import {useNavigate} from "react-router-dom";
+import {Credentials} from "../model/Credentials.ts";
+
+import {useAuth} from "../../context/useAuth.tsx";
 
 const LoginPage = () => {
-
+  const context = useAuth();
   const {
     mutate,
     isPending,
@@ -17,6 +19,7 @@ const LoginPage = () => {
   const handleLogin = (credentials: Credentials) => {
     mutate(credentials, {
       onSuccess: () => {
+        context.login(credentials.email)
         navigate("/");
       }
     });

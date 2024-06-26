@@ -1,11 +1,11 @@
 import React from 'react';
 
-const PersonEditPage = () => {
+const PersonUpdatePage = () => {
   return (
     <div>
-      
+
     </div>
   );
 };
 
-export default PersonEditPage;
+export default PersonUpdatePage;

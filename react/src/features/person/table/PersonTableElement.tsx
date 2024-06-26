@@ -11,20 +11,22 @@ import {
   ModalOverlay,
   Switch,
   Td,
-  Text, Toast,
+  Text,
   Tr,
   useDisclosure
 } from "@chakra-ui/react";
 import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
-import {Person} from "../auth/models/models.ts";
-import publicApi from "../common/api-client.ts";
-import { useToast } from "@chakra-ui/toast";
+import {Person} from "../../auth/model/Person.ts";
+import publicApi from "../../common/api-client.ts";
+import {useToast} from "@chakra-ui/toast";
+import {ReactNode} from "react";
 
 interface PersonCrudElementProps {
   element: Person;
+  children: ReactNode
 }
 
-const PersonCrudElement = ({element}: PersonCrudElementProps) => {
+const PersonTableElement = ({element}: PersonCrudElementProps) => {
   const toast = useToast();
 
   const {isOpen, onOpen, onClose} = useDisclosure();
@@ -62,7 +64,7 @@ const PersonCrudElement = ({element}: PersonCrudElementProps) => {
             <ModalHeader>Delete Person</ModalHeader>
             <ModalCloseButton/>
             <ModalBody>
-              Are you sure to delete user {element.email}? You can just disable it.
+              Are you sure to delete user {element.email}?
             </ModalBody>
             <ModalFooter>
               <Button colorScheme='blue' mr={3} onClick={onClose}>Cancel</Button>
@@ -77,4 +79,4 @@ const PersonCrudElement = ({element}: PersonCrudElementProps) => {
   );
 };
 
-export default PersonCrudElement;
+export default PersonTableElement;

@@ -6,12 +6,14 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 import FrontLayout from "./features/layout/FrontLayout.tsx";
-import ErrorPage from "./features/errors/ErrorPage.tsx";
-import PersonEditPage from "./features/person/PersonEditPage.tsx";
+import ErrorPage from "./features/error/ErrorPage.tsx";
+import PersonUpdatePage from "./features/person/table/PersonUpdatePage.tsx";
 import LoginPage from "./features/auth/login/LoginPage.tsx";
 import SignupPage from "./features/auth/signup/SignupPage.tsx";
 import AdminLayout from "./features/layout/AdminLayout.tsx";
-import PersonCrud from "./features/person/PersonCrud.tsx";
+import PersonTable from "./features/person/table/PersonTable.tsx";
+
+import {AuthProvider} from "./features/context/AuthProvider.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -37,22 +39,25 @@ const router = createBrowserRouter([
     children: [
       {
         path: "persons/:personId",
-        element: <PersonEditPage/>,
+        element: <PersonUpdatePage/>,
       },
       {
         path: "person-table",
-        element: <PersonCrud/>
+        element: <PersonTable/>
       }
     ],
   },
 ]);
 
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
-        <RouterProvider router={router}/>
-      </ChakraProvider>
-    </QueryClientProvider>
-  </React.StrictMode>,
+  <AuthProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider>
+          <RouterProvider router={router} />
+        </ChakraProvider>
+      </QueryClientProvider>
+    </React.StrictMode>,
+  </AuthProvider>
 )

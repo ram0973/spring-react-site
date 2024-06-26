@@ -1,7 +1,7 @@
 import SignupForm from "./SignupForm.tsx";
 import {useSignup} from "./useSignup.ts";
-import {Credentials} from "../models/models.ts";
 import {useNavigate} from "react-router-dom";
+import {Credentials} from "../model/Credentials.ts";
 
 const SignupPage = () => {
 
