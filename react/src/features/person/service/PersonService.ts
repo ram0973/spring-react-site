@@ -1,5 +1,5 @@
 import {Person} from "../model/Person.ts";
-import publicApi from "../../common/api-client.ts";
+import axiosInstance from "../../common/axiosInstance.ts";
 
 export async function getPersons(page?: number): Promise<Person[]> {
   const offset = page ? (page - 1) * 10 : 0;
@@ -8,11 +8,8 @@ export async function getPersons(page?: number): Promise<Person[]> {
     offset: `${offset}`,
   });
   const BASE_URL = "https://localhost:8080/api/v1";
-  console.log("FETCH", `${BASE_URL}/articles/feed?` + searchParams);
-
-  const response = await publicApi.get<Person[]>(`${BASE_URL}/articles/feed?` + searchParams, {
+  const response = await axiosInstance.get<Person[]>(`${BASE_URL}/articles/feed?` + searchParams, {
     method: "GET",
-    headers: setHeaders(token),
   });
   if (!response.ok) {
     throw Error(response.statusText);

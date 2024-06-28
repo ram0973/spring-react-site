@@ -3,7 +3,7 @@ import {useLogin} from "./useLogin.ts";
 import {useNavigate} from "react-router-dom";
 import {Credentials} from "../model/Credentials.ts";
 
-import {useAuth} from "../../context/useAuth.tsx";
+import {useAuth} from "../../context/auth/useAuth.tsx";
 
 const LoginPage = () => {
   const context = useAuth();
@@ -19,7 +19,7 @@ const LoginPage = () => {
   const handleLogin = (credentials: Credentials) => {
     mutate(credentials, {
       onSuccess: () => {
-        context.login(credentials.email)
+        context.login(credentials.email);
         navigate("/");
       }
     });

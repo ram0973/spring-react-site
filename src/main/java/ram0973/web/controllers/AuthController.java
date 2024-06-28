@@ -44,12 +44,11 @@ public class AuthController {
         return new ResponseEntity<>("Logged out", HttpStatus.OK);
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/me")
     public ResponseEntity<String> profile(Principal principal) {
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Principal is null", HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>("Principal is null", HttpStatus.BAD_REQUEST);
     }
 }

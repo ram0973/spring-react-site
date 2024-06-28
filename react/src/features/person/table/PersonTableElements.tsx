@@ -1,15 +1,15 @@
 import {Td, Tr} from "@chakra-ui/react";
-import {Person} from "../../auth/model/Person.ts";
-import publicApi from "../../common/api-client.ts";
 import {useQuery} from "@tanstack/react-query";
 import PersonTableElement from "./PersonTableElement.tsx";
+import {Person} from "../model/Person.ts";
+import axiosInstance from "../../common/axiosInstance.ts";
 
 const PersonTableElements = () => {
 
   const {isPending, isError, data, error} = useQuery({
     queryKey: ['persons'],
     queryFn: async () => {
-      const response = await publicApi.get('/api/v1/person/all');
+      const response = await axiosInstance.get('/api/v1/person/all');
       return await response.data.person;
     }
   });
@@ -25,7 +25,7 @@ const PersonTableElements = () => {
   return (
     data.map((element: Person, index: number) => {
         return (
-          <PersonTableElement element={element} key={index}/>
+          <PersonTableElement element={element} key={index} />
         )
       }
     )

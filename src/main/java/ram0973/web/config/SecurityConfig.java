@@ -30,13 +30,11 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             )
             .authorizeHttpRequests(o -> o
-                .requestMatchers(HttpMethod.GET, "/", "/api/v1/auth/info", "/error").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/auth/profile").permitAll()
-                .requestMatchers(HttpMethod.POST, "/error", "/api/v1/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                //
+                //.requestMatchers(HttpMethod.GET, "/error").permitAll()
+                //.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                //.requestMatchers(HttpMethod.POST, "/api/v1/person/**").permitAll()
                 //.anyRequest().rememberMe()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
             //.rememberMe(o -> o
             //    .tokenValiditySeconds(60 * 60 * 24 * 365)

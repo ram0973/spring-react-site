@@ -10,12 +10,12 @@ import java.util.Set;
 
 public record PersonRequestDto(
     boolean enabled,
-    boolean credentialsNonExpired,
-    boolean accountNonExpired,
-    boolean nonLocked,
-    @DateTimeFormat String dateCreated,
-    @NotNull @NotBlank String email,
-    @NotNull String password,
-    Set<Role> roles
+    //boolean credentialsNonExpired,
+    //boolean accountNonExpired,
+    //boolean nonLocked,
+    //@DateTimeFormat String dateCreated,
+    @NotNull @NotBlank String email
+    //@NotNull String password,
+    //Set<Role> roles
 ) {
 }

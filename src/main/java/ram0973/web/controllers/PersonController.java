@@ -42,7 +42,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Person> getPersonById(@PathVariable("id") int id) {
         Person Person = personService.findById(id).orElseThrow(
             () -> new NoSuchEntityException("No such Person with id: " + id));

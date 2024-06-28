@@ -16,45 +16,39 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
-import {Person} from "../../auth/model/Person.ts";
-import publicApi from "../../common/api-client.ts";
 import {useToast} from "@chakra-ui/toast";
 import {ReactNode} from "react";
+import {Person} from "../model/Person.ts";
+import axiosInstance from "../../common/axiosInstance.ts";
 
 interface PersonCrudElementProps {
   element: Person;
   children: ReactNode
 }
 
-const PersonTableElement = ({element}: PersonCrudElementProps) => {
+const PersonTableElement = ({element}) => {
   const toast = useToast();
-
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   const onDeletePersonHandle = async (id: number) => {
-    const response = await publicApi.delete(`/api/v1/person/${id}`);
-    window.location.reload(); //TODO: BAD THING
-    if (response.status == 200) {
-    }
-  }
-
-  const onChangeEnabledPersonHandle = async (id: number, enabled: boolean) => {
-    const response = await publicApi.patch(`/api/v1/person/${id}/enable`, enabled);
-    if (response.status == 200) {
-      toast({
-        title: "Success!",
-        description: "Successfully deleted user",
-      });
-    }
+    axiosInstance
+      .delete(`/api/v1/person/${id}`)
+      .then(() => {
+        onClose();
+        toast({
+          title: "Success!",
+          description: "Successfully deleted user",
+        });
+        //TODO : refresh table
+      })
+      .catch((reason) => {console.error(reason)})
   }
 
   return (
     <Tr key={element.id}>
       <Td>{element.id}</Td>
       <Td><HStack><Avatar size="sm" name={element.email}/><Text>{element.email}</Text></HStack></Td>
-      <Td><Switch id='isEnabled' isChecked={element.enabled} onClick={() => {
-        onChangeEnabledPersonHandle(element.id, element.enabled);
-      }} style={{cursor: 'pointer'}}/></Td>
+      <Td><Switch disabled id='isEnabled' isChecked={element.enabled} style={{cursor: 'pointer'}}/></Td>
       <Td><HStack>
         <EditIcon style={{cursor: 'pointer'}}/>
         <DeleteIcon onClick={onOpen} style={{cursor: 'pointer'}}/>

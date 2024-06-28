@@ -1,14 +1,20 @@
 import React from "react";
 import AuthContext from "./AuthContext.tsx";
+import useResponseInterceptor from "../axios/useResponseInterceptor.ts";
 
-export function AuthProvider({children}: { children: React.ReactNode }) {
+const AuthProvider = ({children}: { children: React.ReactNode }) => {
   const key = "webapp.auth"
   const [user, setUser] = React.useState<string | null>(getStoredUser(key))
   const isAuthenticated = !!user
 
-  async function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms))
-  }
+  // const interceptorReady = useResponseInterceptor(function(response) {
+  //   return response;
+  // }, function(error) {
+  //   if (user && error.response.status === 403) {
+  //     logout();
+  //   }
+  //   throw(error);
+  // }, [user]);
 
   function getStoredUser(key: string) {
     return localStorage.getItem(key)
@@ -17,20 +23,16 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
   function setStoredUser(user: string | null) {
     if (user) {
       localStorage.setItem(key, user)
-    } else {
-      localStorage.removeItem(key)
     }
+    localStorage.removeItem(key)
   }
 
-  const logout = React.useCallback(async () => {
-    await sleep(250)
+  const logout = React.useCallback(() => {
     setStoredUser(null)
     setUser(null)
   }, [])
 
-  const login = React.useCallback(async (username: string) => {
-    await sleep(500)
-
+  const login = React.useCallback( (username: string) => {
     setStoredUser(username)
     setUser(username)
   }, [])
@@ -45,3 +47,5 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     </AuthContext.Provider>
   )
 }
+
+export default AuthProvider;
