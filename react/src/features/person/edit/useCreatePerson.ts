@@ -4,13 +4,17 @@ import {AxiosErrorResponseDto} from "../../common/AxiosErrorResponseDto.ts";
 import {PersonEditRequestDto} from "../dto/PersonEditRequestDto.ts";
 import axiosInstance from "../../common/axiosInstance.ts";
 
-
-const useCreateOrEditPerson = ({id}) => {
-
+const useCreatePerson = () => {
   return useMutation<void, AxiosError<AxiosErrorResponseDto>, PersonEditRequestDto>({
-     mutationKey: ['editPerson', id],
-     mutationFn: (person: PersonEditRequestDto) => axiosInstance.put(`/api/v1/person/${person.id}`, person)
+    mutationKey: ['createPerson'],
+    mutationFn: (person: PersonEditRequestDto) => axiosInstance.post("/api/v1/person", person),
+    onSuccess: () => {
+      console.info("successfully created person")
+    },
+    onError: (error: AxiosError) => {
+      console.error(error);
+    }
   });
 };
 
-export {useCreateOrEditPerson};
+export default useCreatePerson;

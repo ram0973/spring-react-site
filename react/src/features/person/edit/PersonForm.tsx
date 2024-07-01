@@ -1,4 +1,17 @@
-import {Box, Button, Center, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Image, Input, Stack, Switch, VStack
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Image,
+  Input,
+  Stack,
+  Switch,
+  VStack
 } from "@chakra-ui/react";
 import z from 'zod';
 
@@ -9,7 +22,6 @@ import {useParams} from "react-router-dom";
 
 const personEditFormSchema = z
   .object({
-    id: z.number().int().nonnegative("Invalid id"),
     email: z.string().email("Invalid email"),
     enabled: z.boolean()
   });
@@ -23,18 +35,18 @@ interface UserEditFormProps {
   onFormSubmit: (person: PersonEditRequestDto) => void;
 }
 
-const PersonCreateOrEditForm = ({isError, isLoading, errorMessage, onFormSubmit}: UserEditFormProps) => {
+const PersonForm = ({isError, isLoading, errorMessage, onFormSubmit}: UserEditFormProps) => {
   const {
     register,
     handleSubmit,
     formState: {errors}
   } = useForm<PersonEditFormData>({
+    //defaultValues: { data: person?.data1 },
     mode: 'onChange',
     resolver: zodResolver(personEditFormSchema)
   });
 
   const {id} = useParams();
-  console.log(id);
 
   return (
     <Flex direction="row" flex="1" align="center" justify="center" backgroundColor="gray.100" p={10}>
@@ -44,7 +56,7 @@ const PersonCreateOrEditForm = ({isError, isLoading, errorMessage, onFormSubmit}
             <Center pb="8">
               <VStack>
                 <Image boxSize="64px" src={"/react.svg"}/>
-                <Heading fontSize="2xl">Edit person</Heading>
+                <Heading fontSize="2xl">{id ? "Edit person" : "Create person"}</Heading>
                 {isError &&
                   <Box backgroundColor={'red.200'} p={'16px'} borderRadius={'8px'}>
                     <Heading fontSize={'2xm'} color={'red.700'}>{errorMessage}</Heading>
@@ -73,4 +85,4 @@ const PersonCreateOrEditForm = ({isError, isLoading, errorMessage, onFormSubmit}
   );
 };
 
-export default PersonCreateOrEditForm;
+export default PersonForm;

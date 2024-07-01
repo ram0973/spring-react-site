@@ -9,7 +9,10 @@ const useLogin = () => {
 
   return useMutation<void, AxiosError<AxiosErrorResponseDto>, Credentials>({
     mutationKey: ['login'],
-    mutationFn: (credentials: Credentials) => axiosInstance.post('/api/v1/auth/login', credentials)
+    mutationFn: (credentials: Credentials) =>
+      axiosInstance
+        .post('/api/v1/auth/login', credentials)
+        .then(response => response.data)
   });
 }
 

@@ -1,12 +1,12 @@
 import LoginForm from "./LoginForm.tsx";
 import {useLogin} from "./useLogin.ts";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Credentials} from "../model/Credentials.ts";
-
 import {useAuth} from "../../context/auth/useAuth.tsx";
 
 const LoginPage = () => {
   const context = useAuth();
+  const location = useLocation();
   const {
     mutate,
     isPending,
@@ -20,8 +20,13 @@ const LoginPage = () => {
     mutate(credentials, {
       onSuccess: () => {
         context.login(credentials.email);
-        navigate("/");
-      }
+        console.info("successfully logged in");
+        const origin = location.state?.from?.pathname || "/";
+        navigate(origin);
+      },
+      onError: (error) => {
+        console.error("error on login attempt: ", error)
+      },
     });
   }
 

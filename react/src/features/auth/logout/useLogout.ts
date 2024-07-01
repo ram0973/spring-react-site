@@ -14,7 +14,16 @@ const useLogout = () => {
     mutationFn: () => axiosInstance.post('/api/v1/auth/logout'),
     onSuccess: () => {
       context.logout();
+      console.info("successfully logout")
       navigate("/");
+    },
+    onError: (error: AxiosError) => {
+      if (error?.response?.status == 400) {
+        context.logout();
+        navigate("/");
+      } else {
+        console.error(error);
+      }
     }
   });
 }

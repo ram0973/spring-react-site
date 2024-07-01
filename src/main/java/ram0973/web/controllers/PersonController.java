@@ -56,35 +56,36 @@ public class PersonController {
         if (optionalPerson.isPresent()) {
             throw new EntityAlreadyExistsException("Email already in use");
         } else {
-            Person Person = personService.createPerson(personRequestDto).orElseThrow(
+            Person person = personService.createPerson(personRequestDto).orElseThrow(
                 () -> new EntityPersistActionException("Error while create Person: " + personRequestDto));
-            return ResponseEntity.ok(Person);
+            return ResponseEntity.ok(person);
         }
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Person> updatePerson(@PathVariable("id") int id, @Valid @RequestBody PersonRequestDto personRequestDto) {
-        Person Person = personService.updatePerson(id, personRequestDto).orElseThrow(
+        Person person = personService.updatePerson(id, personRequestDto).orElseThrow(
             () -> new EntityPersistActionException(
                 String.format("Error while update Person with id: %d and body: %s", id, personRequestDto)));
-        return ResponseEntity.ok(Person);
+        return ResponseEntity.ok(person);
     }
 
     @PatchMapping("{id}/enable")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Person> patchPersonEnable(@PathVariable("id") int id,
                                                     @Valid @RequestBody PersonEnableRequestDto personEnableRequestDto) {
-        Person Person = personService.patchPersonEnable(id ,personEnableRequestDto).orElseThrow(
+        Person person = personService.patchPersonEnable(id ,personEnableRequestDto).orElseThrow(
             () -> new EntityPersistActionException(
                 String.format("Error while change enable state for Person with id: %d", id)));
-        return ResponseEntity.ok(Person);
+        return ResponseEntity.ok(person);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deletePerson(@PathVariable("id") int id) {
-        // JPA Repository throws EmptyResultDataAccessException if such id is not exist
+        Person person = personService.findById(id).orElseThrow(
+            () -> new NoSuchEntityException("No such Person with id: " + id));
         personService.deletePerson(id);
         return ResponseEntity.ok(null);
     }

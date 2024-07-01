@@ -65,12 +65,12 @@ const LoginForm = ({isError, isLoading, errorMessage, onFormSubmit, onLinkClick}
               </VStack>
             </Center>
             <FormControl isInvalid={!!errors.email}>
-              <FormLabel>Email</FormLabel>
-              <Input id="email" type="email" placeholder="Enter your email" {...register('email')}/>
+              <FormLabel htmlFor={"email"}>Email</FormLabel>
+              <Input id="email" type="email" placeholder="Enter your email" {...register('email')} autoComplete={"email"}/>
               <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={!!errors.password}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel htmlFor={"password"}>Password</FormLabel>
               <Input id="password" type="password" placeholder="********" {...register('password')}/>
               <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
             </FormControl>

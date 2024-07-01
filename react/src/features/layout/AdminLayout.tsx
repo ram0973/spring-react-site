@@ -2,7 +2,7 @@ import Footer from "./Footer.tsx";
 import {Outlet} from "react-router-dom";
 import "./layouts.css";
 import Header from "./Header.tsx";
-import {Container, Flex, VStack} from "@chakra-ui/react";
+import {Box, Container, Stack} from "@chakra-ui/react";
 import AdminNav from "./AdminNav.tsx";
 
 const AdminLayout = () => {
@@ -11,10 +11,10 @@ const AdminLayout = () => {
     <div className="lg:container lg:mx-auto">
       <Header/>
       <Container className={"lg:container lg:mx-auto"}>
-        <Flex direction={"row"} justify={"space-between"}>
-          <VStack><AdminNav/></VStack>
-          <VStack><Outlet/></VStack>
-        </Flex>
+        <Stack direction={['column', 'row']} spacing='24px'>
+          <Box w={"200px"}><AdminNav/></Box>
+          <Box><Outlet/></Box>
+        </Stack>
       </Container>
       <Footer/>
     </div>

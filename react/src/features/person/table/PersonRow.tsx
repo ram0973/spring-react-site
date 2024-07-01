@@ -26,7 +26,7 @@ interface PersonCrudElementProps {
   children: ReactNode
 }
 
-const PersonTableElement = ({element}) => {
+const PersonRow = ({element}) => {
   const toast = useToast();
   const {isOpen, onOpen, onClose} = useDisclosure();
 
@@ -73,4 +73,4 @@ const PersonTableElement = ({element}) => {
   );
 };
 
-export default PersonTableElement;
+export default PersonRow;

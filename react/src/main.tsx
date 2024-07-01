@@ -13,9 +13,12 @@ import AdminLayout from "./features/layout/AdminLayout.tsx";
 import PersonTable from "./features/person/table/PersonTable.tsx";
 
 import AuthProvider from "./features/context/auth/AuthProvider.tsx";
-import PersonCreateOrEditPage from "./features/person/edit/PersonCreateOrEditPage.tsx";
+import PersonUpdate from "./features/person/edit/PersonUpdate.tsx";
+import ProtectedRoute from "./features/layout/ProtectedRoute.tsx";
+import PersonCreate from "./features/person/edit/PersonCreate.tsx";
 
 const queryClient = new QueryClient();
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,21 +37,21 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout/>,
+    element: <ProtectedRoute><AdminLayout/></ProtectedRoute>,
     errorElement: <ErrorPage/>,
     children: [
-      // {
-      //   path: "persons/:personId/edit",
-      //   element: <PersonEditPage/>,
-      // },
       {
-        path: "person-table",
+        path: "persons",
         element: <PersonTable/>
       },
       {
-        path: "person/:id",
-        element: <PersonCreateOrEditPage/>
-      }
+        path: "persons/create",
+        element: <PersonCreate/>
+      },
+      {
+        path: "persons/edit/:id",
+        element: <PersonUpdate/>
+      },
     ],
   },
 ]);

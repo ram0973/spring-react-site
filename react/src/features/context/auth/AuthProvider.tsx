@@ -1,51 +1,29 @@
-import React from "react";
+import React, {useMemo} from "react";
 import AuthContext from "./AuthContext.tsx";
-import useResponseInterceptor from "../axios/useResponseInterceptor.ts";
+import useLocalStorage from "./useLocalStorage.tsx";
 
 const AuthProvider = ({children}: { children: React.ReactNode }) => {
   const key = "webapp.auth"
-  const [user, setUser] = React.useState<string | null>(getStoredUser(key))
-  const isAuthenticated = !!user
+  const [user, setUser] = useLocalStorage(key, null);
 
-  // const interceptorReady = useResponseInterceptor(function(response) {
-  //   return response;
-  // }, function(error) {
-  //   if (user && error.response.status === 403) {
-  //     logout();
-  //   }
-  //   throw(error);
-  // }, [user]);
-
-  function getStoredUser(key: string) {
-    return localStorage.getItem(key)
-  }
-
-  function setStoredUser(user: string | null) {
-    if (user) {
-      localStorage.setItem(key, user)
-    }
-    localStorage.removeItem(key)
-  }
+  const login = React.useCallback((data) => {
+    setUser(data);
+  }, [setUser]);
 
   const logout = React.useCallback(() => {
-    setStoredUser(null)
-    setUser(null)
-  }, [])
+    setUser(null);
+  }, [setUser]);
 
-  const login = React.useCallback( (username: string) => {
-    setStoredUser(username)
-    setUser(username)
-  }, [])
+  const value = useMemo(
+    () => ({
+      user,
+      login,
+      logout,
+    }),
+    [login, logout, user]
+  );
 
-  React.useEffect(() => {
-    setUser(getStoredUser(key))
-  }, [])
-
-  return (
-    <AuthContext.Provider value={{isAuthenticated, user, login, logout}}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;

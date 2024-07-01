@@ -1,8 +1,10 @@
+import {Link} from "react-router-dom";
+
 const AdminNav = () => {
   return (
-    <div>
-      Users
-    </div>
+    <h2>
+      <Link to={"/admin/persons"}>Persons list</Link>
+    </h2>
   );
 };
 

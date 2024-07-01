@@ -15,6 +15,7 @@ const SignupPage = () => {
 
   const handleRegisterAccount = (credentials: Credentials) => {
     mutate(credentials);
+    navigate("/login")
   }
 
   const navigate = useNavigate();
