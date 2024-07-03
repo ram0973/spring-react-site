@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  background: aliceblue !important;
+}
+
 html, body, #root {
   width: 100vw;
   height: 100vh;

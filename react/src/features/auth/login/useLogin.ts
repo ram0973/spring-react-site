@@ -12,7 +12,8 @@ const useLogin = () => {
     mutationFn: (credentials: Credentials) =>
       axiosInstance
         .post('/api/v1/auth/login', credentials)
-        .then(response => response.data)
+        .then(response => response.data),
+    retry: 0
   });
 }
 

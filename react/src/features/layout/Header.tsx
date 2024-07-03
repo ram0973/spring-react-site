@@ -7,7 +7,6 @@ import LogoutButton from "../auth/logout/LogoutButton.tsx";
 
 const Header = () => {
   const context = useAuth();
-  console.log(context);
   return (
     <>
       <Flex minWidth='max-content' alignItems='center' gap='2' className={"mt-2 mb-4"}>

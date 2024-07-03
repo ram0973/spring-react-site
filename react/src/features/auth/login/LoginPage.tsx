@@ -34,10 +34,12 @@ const LoginPage = () => {
     navigate("/signup");
   }
 
+  const errorMessage = error?.response?.data?.message;
+
   return (
     <LoginForm isError={isError}
                isLoading={isPending}
-               errorMessage={error?.response?.data?.message}
+               errorMessage={errorMessage}
                onFormSubmit={handleLogin}
                onLinkClick={handleNavigateToRegisterPage}
     />
