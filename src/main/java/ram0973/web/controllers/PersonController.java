@@ -21,14 +21,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/person")
+@RequestMapping("/api/v1/persons")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonService personService;
 
-    @GetMapping("/all")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PagedPersonsResponseDto> getPersons(
         @RequestParam(required = false) String title,
         @RequestParam(defaultValue = "0") int page,
@@ -42,7 +42,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Person> getPersonById(@PathVariable("id") int id) {
         Person Person = personService.findById(id).orElseThrow(
             () -> new NoSuchEntityException("No such Person with id: " + id));
@@ -68,16 +68,6 @@ public class PersonController {
         Person person = personService.updatePerson(id, personRequestDto).orElseThrow(
             () -> new EntityPersistActionException(
                 String.format("Error while update Person with id: %d and body: %s", id, personRequestDto)));
-        return ResponseEntity.ok(person);
-    }
-
-    @PatchMapping("{id}/enable")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Person> patchPersonEnable(@PathVariable("id") int id,
-                                                    @Valid @RequestBody PersonEnableRequestDto personEnableRequestDto) {
-        Person person = personService.patchPersonEnable(id ,personEnableRequestDto).orElseThrow(
-            () -> new EntityPersistActionException(
-                String.format("Error while change enable state for Person with id: %d", id)));
         return ResponseEntity.ok(person);
     }
 

@@ -4,18 +4,16 @@ import './index.css'
 import {ChakraProvider} from '@chakra-ui/react'
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-
-import FrontLayout from "./features/layout/FrontLayout.tsx";
-import ErrorPage from "./features/error/ErrorPage.tsx";
-import LoginPage from "./features/auth/login/LoginPage.tsx";
-import SignupPage from "./features/auth/signup/SignupPage.tsx";
-import AdminLayout from "./features/layout/AdminLayout.tsx";
-import PersonTable from "./features/person/table/PersonTable.tsx";
-
-import AuthProvider from "./features/context/auth/AuthProvider.tsx";
-import PersonUpdate from "./features/person/edit/PersonUpdate.tsx";
-import ProtectedRoute from "./features/layout/ProtectedRoute.tsx";
-import PersonCreate from "./features/person/edit/PersonCreate.tsx";
+import ErrorPage from "./layout/ErrorPage.tsx";
+import SignupPage from "./auth/signup/SignupPage.tsx";
+import ProtectedRoute from "./layout/ProtectedRoute.tsx";
+import AdminLayout from "./layout/AdminLayout.tsx";
+import Persons from "./entities/person/Persons.tsx";
+import PersonCreate from "./entities/person/PersonCreate.tsx";
+import PersonUpdate from "./entities/person/PersonUpdate.tsx";
+import {FrontLayout} from "./layout/FrontLayout.tsx";
+import {LoginPage} from "./auth/login/LoginPage.tsx";
+import {AuthProvider} from "./auth/context/AuthProvider.tsx";
 
 const queryClient = new QueryClient();
 
@@ -42,14 +40,14 @@ const router = createBrowserRouter([
     children: [
       {
         path: "persons",
-        element: <PersonTable/>
+        element: <Persons/>
       },
       {
         path: "persons/create",
         element: <PersonCreate/>
       },
       {
-        path: "persons/edit/:id",
+        path: "persons/update/:id",
         element: <PersonUpdate/>
       },
     ],
@@ -58,12 +56,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <AuthProvider>
           <RouterProvider router={router}/>
-        </ChakraProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+        </AuthProvider>
+      </ChakraProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 )

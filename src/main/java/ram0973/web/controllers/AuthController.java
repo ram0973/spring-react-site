@@ -38,10 +38,9 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return new ResponseEntity<>("Not logged in", HttpStatus.BAD_REQUEST);
+        if (authentication != null && authentication.isAuthenticated()) {
+            authService.logout(authentication, request, response);
         }
-        authService.logout(authentication, request, response);
         return new ResponseEntity<>("Logged out", HttpStatus.OK);
     }
 
