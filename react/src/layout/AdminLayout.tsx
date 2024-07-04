@@ -2,12 +2,12 @@ import Footer from "./Footer.tsx";
 import {Outlet} from "react-router-dom";
 import Header from "./Header.tsx";
 import AdminNav from "./AdminNav.tsx";
-import {HStack} from "@chakra-ui/react";
+import {Container, HStack} from "@chakra-ui/react";
 
 const AdminLayout = () => {
 
   return (
-    <div className="lg:container lg:mx-auto">
+    <Container minW={"1280px"}>
       <Header/>
       <HStack>
       <AdminNav/>
@@ -16,7 +16,7 @@ const AdminLayout = () => {
 
       </HStack>
       <Footer/>
-    </div>
+    </Container>
   )
 }
 

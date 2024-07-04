@@ -24,10 +24,10 @@ const PersonUpdate = () => {
 
   const {data, isError, isPending, isSuccess} = useGetPerson(id);
   const person = {...data}
-
-  const handleCreateOrUpdatePerson = (person: Person) => {
+  const mutation = useUpdatePerson()
+  const handleCreateOrUpdatePerson = () => {
     console.log("submitted")
-    mutate(id);
+    mutation.mutate();
   }
 
   const navigate = useNavigate();

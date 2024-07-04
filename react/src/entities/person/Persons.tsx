@@ -1,28 +1,47 @@
-import {Table, Heading, TableContainer, Tbody, Tfoot, Th, Thead, Tr, Button, Td} from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  HStack,
+  Spacer,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  VStack
+} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import {useGetPersons} from "./service/queries.ts";
 import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 import PersonRow from "./PersonRow.tsx";
 import {Person} from "./model/Person.ts";
+import {AddIcon} from "@chakra-ui/icons";
+import error = Simulate.error;
 
 
-export default function Persons () {
+export default function Persons() {
   return (
     <>
-      <Button colorScheme='twitter'><Link to={"/admin/persons/add"}>Admin</Link></Button>
-      <Heading size={"lg"}>Persons</Heading>
-      <TableContainer>
-        <Table variant='striped'>
-          <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
-          <Tbody>
-            <PersonRows/>
-          </Tbody>
-          <Tfoot>
-            <Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th></Th></Tr>
-          </Tfoot>
-        </Table>
-      </TableContainer>
+      <VStack flexGrow={1}>
+        <HStack justifyContent={"space-between"}>
+          <Heading size={"lg"}>Persons</Heading>
+          <Button colorScheme='twitter'><Link to={"/admin/persons/add"}><AddIcon/> Add person</Link></Button>
+        </HStack>
+        <TableContainer w={"max-content"}>
+          <Table variant='striped'>
+            <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
+            <Tbody>
+              <PersonRows/>
+            </Tbody>
+            <Tfoot>
+              <Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th></Th></Tr>
+            </Tfoot>
+          </Table>
+        </TableContainer>
+      </VStack>
     </>
   );
 }
