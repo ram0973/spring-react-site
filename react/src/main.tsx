@@ -1,22 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import {ChakraProvider, extendTheme, withDefaultColorScheme} from '@chakra-ui/react'
+import {ChakraProvider} from '@chakra-ui/react'
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import ErrorPage from "./layout/ErrorPage.tsx";
-import SignupPage from "./auth/signup/SignupPage.tsx";
 import ProtectedRoute from "./layout/ProtectedRoute.tsx";
 import AdminLayout from "./layout/AdminLayout.tsx";
-import Persons from "./entities/person/Persons.tsx";
-import PersonCreate from "./entities/person/PersonCreate.tsx";
-import PersonUpdate from "./entities/person/PersonUpdate.tsx";
 import {FrontLayout} from "./layout/FrontLayout.tsx";
 import {LoginPage} from "./auth/login/LoginPage.tsx";
 import {AuthProvider} from "./auth/context/AuthProvider.tsx";
+import {SignupPage} from "./auth/signup/SignupPage.tsx";
+import {PersonTablePage} from "./entities/person/crud/table/PersonTablePage.tsx";
+import {PersonCreatePage} from "./entities/person/crud/create/PersonCreatePage.tsx";
+import {PersonUpdatePage} from "./entities/person/crud/update/PersonUpdatePage.tsx";
 
 const queryClient = new QueryClient();
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -40,26 +39,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "persons",
-        element: <Persons/>
+        element: <PersonTablePage/>
       },
       {
         path: "persons/create",
-        element: <PersonCreate/>
+        element: <PersonCreatePage/>
       },
       {
         path: "persons/update/:id",
-        element: <PersonUpdate/>
+        element: <PersonUpdatePage/>
       },
     ],
   },
 ]);
 
-const customTheme = extendTheme(withDefaultColorScheme({ colorScheme: 'blue' }))
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={customTheme}>
+      <ChakraProvider>
         <AuthProvider>
           <RouterProvider router={router}/>
         </AuthProvider>

@@ -13,53 +13,33 @@ import {
   Stack,
   VStack
 } from "@chakra-ui/react";
-import z from 'zod';
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 
 import {Credentials} from "../model/Credentials.ts";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import {SignupFormData, signupFormSchema} from "./zod.tsx";
 
-const registerFormSchema = z
-  .object({
-    email: z.string().email("Invalid email"),
-    password: z.string().min(8, "Password must contain at least 8 symbols"),
-    confirmPassword: z.string().min(8, "Passwords must match"),
-  })
-  .refine(
-    (values) => {
-      return values.password === values.confirmPassword;
-    },
-    {
-      message: "Passwords mismatch",
-      path: ["confirmPassword"]
-    }
-  );
-
-type RegisterFormData = z.infer<typeof registerFormSchema>;
-
-interface RegisterFormProps {
+type SignupFormProps = {
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
   errorMessage?: string;
   onFormSubmit: (credentials: Credentials) => void;
-  onLinkClick: () => void;
 }
 
-const SignupForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, onLinkClick}: RegisterFormProps) => {
-
-  const {
-    register,
-    handleSubmit,
-    formState: {errors}
-  } = useForm<RegisterFormData>({
+export const SignupForm: React.FC<SignupFormProps> =
+  ({isError, isSuccess, isLoading, errorMessage, onFormSubmit}) => {
+  const navigate = useNavigate();
+  const form = useForm<SignupFormData>({
     mode: 'onChange',
-    resolver: zodResolver(registerFormSchema)
+    resolver: zodResolver(signupFormSchema)
   });
 
   return (
     <Flex direction="row" flex="1" align="center" justify="center" backgroundColor="gray.100" p={10}>
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+      <form onSubmit={form.handleSubmit(onFormSubmit)}>
         <Center maxW="lg" w="lg" shadow="lg" backgroundColor="white" rounded='md'>
           <Stack spacing="2" pt="16" pb="16">
             <Center pb="8">
@@ -78,26 +58,26 @@ const SignupForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, 
                 }
               </VStack>
             </Center>
-            <FormControl isInvalid={!!errors.email}>
+            <FormControl isInvalid={!!form.formState.errors.email}>
               <FormLabel>Email</FormLabel>
-              <Input id="email" type="email" placeholder="Enter your email" {...register('email')}/>
-              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              <Input id="email" type="email" placeholder="Enter your email" {...form.register('email')}/>
+              <FormErrorMessage>{form.formState.errors.email?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={!!errors.password}>
+            <FormControl isInvalid={!!form.formState.errors.password}>
               <FormLabel>Password</FormLabel>
-              <Input id="password" type="password" placeholder="********"  {...register('password')}/>
-              <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+              <Input id="password" type="password" placeholder="********"  {...form.register('password')}/>
+              <FormErrorMessage>{form.formState.errors.password?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={!!errors.confirmPassword}>
+            <FormControl isInvalid={!!form.formState.errors.confirmPassword}>
               <FormLabel>Repeat password</FormLabel>
-              <Input id="confirmPassword" type="password" placeholder="********"  {...register('confirmPassword')}/>
-              <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
+              <Input id="confirmPassword" type="password" placeholder="********"  {...form.register('confirmPassword')}/>
+              <FormErrorMessage>{form.formState.errors.confirmPassword?.message}</FormErrorMessage>
             </FormControl>
             <Stack spacing="6" pt="4">
               <Button type="submit" colorScheme="twitter" variant="solid" isDisabled={isLoading}>
                 Sign up
               </Button>
-              <Link color="twitter.500" onClick={onLinkClick}>
+              <Link color="twitter.500" onClick={() => navigate("/login")}>
                 Already signed up?
               </Link>
             </Stack>
@@ -107,5 +87,3 @@ const SignupForm = ({isError, isSuccess, isLoading, errorMessage, onFormSubmit, 
     </Flex>
   );
 };
-
-export default SignupForm;

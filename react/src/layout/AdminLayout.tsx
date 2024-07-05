@@ -10,10 +10,8 @@ const AdminLayout = () => {
     <Container minW={"1280px"}>
       <Header/>
       <HStack>
-      <AdminNav/>
-
-      <Outlet/>
-
+        <AdminNav/>
+        <Outlet/>
       </HStack>
       <Footer/>
     </Container>

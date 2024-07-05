@@ -9,7 +9,6 @@ export default defineConfig({
     mkcert(),
   ],
   server: {
-    // change for CORS
     proxy: {
       '/api': {
         target: 'http://localhost:8080/api',

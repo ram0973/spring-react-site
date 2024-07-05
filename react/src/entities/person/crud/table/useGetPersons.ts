@@ -1,24 +1,15 @@
-import {Person} from "../model/Person.ts";
-import axiosInstance from "../../../services/axios/axiosInstance.ts";
+import {useQuery} from "@tanstack/react-query";
+import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 
-export const getPersons = async () => {
+const getPersonsApi = async () => {
   return (await axiosInstance.get('/api/v1/persons')).data.persons;
 }
 
-export async function getPerson(id: number | undefined) {
-  return (await axiosInstance.get(`/api/v1/persons/${id}`)).data;
-}
-
-export const createPerson = async (person: Person) => {
-  await axiosInstance.post("persons", person);
-}
-
-export const updatePerson = async (person: Person) => {
-  await axiosInstance.put(`persons/${person.id}`, person);
-}
-
-export const deletePerson = async (id: number) => {
-  await axiosInstance.delete(`persons/${id}`);
+export function useGetPersons() {
+  return useQuery({
+    queryKey: ["persons"],
+    queryFn: getPersonsApi,
+  });
 }
 
 // export async function getPersonsPaged(page?: number): Promise<Person[]> {

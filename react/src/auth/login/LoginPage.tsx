@@ -8,18 +8,11 @@ import React from "react";
 export const LoginPage: React.FC = () => {
   const context = useContextAuth();
   const location = useLocation();
-
-  const {
-    mutate,
-    isPending,
-    error,
-    isError,
-  } = useLogin();
-
+  const mutation = useLogin();
   const navigate = useNavigate();
 
   const handleLogin = (credentials: Credentials) => {
-    mutate(credentials, {
+    mutation.mutate(credentials, {
       onSuccess: () => {
         context.login({email: credentials.email});
         console.info("successfully logged in");
@@ -32,18 +25,6 @@ export const LoginPage: React.FC = () => {
     });
   }
 
-  const handleNavigateToRegisterPage = () => {
-    navigate("/signup");
-  }
-
-  const errorMessage = error?.response?.data?.message;
-
-  return (
-    <LoginForm isError={isError}
-               isLoading={isPending}
-               errorMessage={errorMessage}
-               onFormSubmit={handleLogin}
-               onLinkClick={handleNavigateToRegisterPage}
-    />
-  );
-};
+  return (<LoginForm isError={mutation.isError} isLoading={mutation.isPending}
+                     errorMessage={mutation.error?.response?.data?.message} onFormSubmit={handleLogin} />);
+}
