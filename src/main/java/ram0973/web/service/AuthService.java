@@ -66,7 +66,7 @@ public class AuthService {
      * @param request  of type HttpServletRequest
      * @param response of type HttpServletResponse
      **/
-    public void login(LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
+    public Authentication login(LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
             dto.email().trim(), dto.password());
         Authentication authentication = this.authManager.authenticate(token);
@@ -79,7 +79,7 @@ public class AuthService {
 
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
-
+        return authentication;
     }
 
     public void logout(@NotNull Authentication authentication, HttpServletRequest request, HttpServletResponse response) {

@@ -3,7 +3,7 @@ import {Person} from "../../model/Person.ts";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 
 const updatePersonApi = async (person: Person) => {
-  await axiosInstance.put(`/api/v1/persons/${person.id}`, person);
+  return await axiosInstance.put(`/api/v1/persons/${person.id}`, person);
 }
 
 export const useUpdatePerson = () => {
@@ -11,13 +11,11 @@ export const useUpdatePerson = () => {
   return useMutation({
     mutationKey: ['updatePerson'],
     mutationFn: updatePersonApi,
-    onSettled:
-      async (_, error) => {
-        if (error) {
-          console.log(error);
-        } else {
-          await queryClient.invalidateQueries({queryKey: ["persons"]})
-        }
-      }
-  })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ["persons"]})
+    },
+    onError: async (error) => {
+      console.log(error)
+    },
+  });
 }

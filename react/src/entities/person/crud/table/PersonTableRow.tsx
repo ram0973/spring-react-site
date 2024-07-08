@@ -13,24 +13,16 @@ type PersonTableRowProps = {
 }
 
 export const PersonTableRow: React.FC<PersonTableRowProps> = ({person}) => {
-  const toast = useToast();
   const deleteModalDisclosure = useDisclosure();
   const deleteMutation = useDeletePerson();
 
   async function deletePersonHandle(id: number) {
     deleteModalDisclosure.onClose();
     try {
+      event.preventDefault()
       await deleteMutation.mutateAsync(id);
-      toast({
-        title: "Success!",
-        description: "Successfully deleted person",
-      });
-    } catch (e) {
-      toast({
-        title: "Error!",
-        description: "Error when delete person",
-        status: "error",
-      });
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -43,8 +35,8 @@ export const PersonTableRow: React.FC<PersonTableRowProps> = ({person}) => {
         <Link to={`/admin/persons/update/${person.id}`}><EditIcon style={{cursor: 'pointer'}}/></Link>
         <DeleteIcon onClick={deleteModalDisclosure.onOpen} style={{cursor: 'pointer'}}/>
         <PersonDeleteModal isOpen={deleteModalDisclosure.isOpen} onClose={deleteModalDisclosure.onClose}
-                           email={person.email} dataKey={person.id} onClick={() => deletePersonHandle(person.id)}/>
-        <ViewIcon style={{cursor: 'pointer'}}/>
+                           email={person.email} dataKey={person.id} onClick={(event) => deletePersonHandle(event, person.id)}/>
+        <Link to={`/admin/persons/${person.id}`}><ViewIcon style={{cursor: 'pointer'}}/></Link>
       </HStack></Td>
     </Tr>
   );

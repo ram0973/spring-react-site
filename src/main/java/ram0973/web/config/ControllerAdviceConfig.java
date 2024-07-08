@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ram0973.web.exceptions.EntityAlreadyExistsException;
+import ram0973.web.exceptions.ForbiddenOperationException;
 import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.exceptions.dto.ApiExceptionResponseDto;
 import ram0973.web.exceptions.dto.FieldViolation;
@@ -77,6 +78,13 @@ public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
     @ResponseBody
     protected ApiExceptionResponseDto handleEmptyResultDataAccessException(Exception ex, WebRequest request) {
         return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ForbiddenOperationException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    protected ApiExceptionResponseDto handleForbiddenOperationException(Exception ex, WebRequest request) {
+        return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     private String getUrl(WebRequest request) {

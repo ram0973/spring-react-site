@@ -1,7 +1,7 @@
 import {AxiosError} from "axios";
 import {useParams} from "react-router-dom";
 import {PersonForm} from "../PersonForm.tsx";
-import {useGetPerson} from "../read/useGetPerson.ts";
+import {useGetPerson} from "../view/useGetPerson.ts";
 import {AxiosErrorResponseDto} from "../../../../services/axios/AxiosErrorResponseDto.ts";
 
 export const PersonUpdatePage = () => {

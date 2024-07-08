@@ -21,6 +21,7 @@ import {Person} from "../model/Person.ts";
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUpdatePerson} from "./update/useUpdatePerson.ts";
+import {useCreatePerson} from "./create/useCreatePerson.ts";
 
 
 const personEditFormSchema = z
@@ -57,13 +58,17 @@ export const PersonForm:React.FC<UserEditFormProps> =
     reset(preloadedValues);
   }, [preloadedValues, reset]);
 
-  const mutation = useUpdatePerson()
+  const createMutation = useCreatePerson()
+  const updateMutation = useUpdatePerson()
   const navigate = useNavigate();
 
-  const onSubmitHandler: SubmitHandler<Person> = (data) => {
-    console.log("submitted")
-    mutation.mutate(data);
-    navigate("/");
+  const onSubmitHandler: SubmitHandler<Person> = (data: Person) => {
+    if (isCreate) {
+      createMutation.mutate(data);
+    } else {
+      updateMutation.mutate(data);
+    }
+    navigate(`/api/v1/admin/persons/${data.id}`);
   }
 
   return (

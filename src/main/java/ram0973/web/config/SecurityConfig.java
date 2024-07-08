@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
@@ -30,26 +31,25 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             )
             .authorizeHttpRequests(o -> o
-                //.requestMatchers(HttpMethod.GET, "/error").permitAll()
-                //.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
-                //.requestMatchers(HttpMethod.POST, "/api/v1/person/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/error").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/persons/**").authenticated()
                 //.anyRequest().rememberMe()
-                .anyRequest().permitAll()
+                .anyRequest().denyAll()
             )
-            //.rememberMe(o -> o
-            //    .tokenValiditySeconds(60 * 60 * 24 * 365)
-            //    .alwaysRemember(true)
-            //    .useSecureCookie(true)
-            //)
+//            .rememberMe(o -> o
+//                .tokenValiditySeconds(60 * 60 * 24 * 365)
+//                .alwaysRemember(true)
+//                .useSecureCookie(true)
+//                .key("uniqueAndSecret")
+//                .rememberMeParameter("rememberMe")
+//                .rememberMeCookieDomain("localhost")
+//            )
             .csrf(o -> o.disable())
             .cors(Customizer.withDefaults()) // o -> o.disable())
             .httpBasic(o -> o.disable())
             .formLogin(o -> o.disable())
-        ;
-        //.logout(o -> o
-        //        .logoutSuccessUrl("/")
-        //        .permitAll()
-        //)
+            //.logout(o -> o.deleteCookies("JSESSIONID").permitAll())
         ;
         return http.build();
     }

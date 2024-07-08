@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import ram0973.web.dto.LoginRequestDto;
 import ram0973.web.dto.RegisterRequestDto;
@@ -31,7 +33,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
-        authService.login(dto, request, response);
+        Authentication auth = authService.login(dto, request, response);
+        //rememberMeServices.loginSuccess(request, response, auth);
         log.info("Person with email: {} has successfully login", dto.email());
         return new ResponseEntity<>("Successfully authenticated", HttpStatus.OK);
     }
@@ -44,11 +47,19 @@ public class AuthController {
         return new ResponseEntity<>("Logged out", HttpStatus.OK);
     }
 
-    @GetMapping("/me")
+    @PostMapping("/me")
     public ResponseEntity<String> profile(Principal principal) {
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
         }
         return new ResponseEntity<>("Principal is null", HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/csrf")
+    public CsrfResponse csrf(HttpServletRequest request) {
+        var csrf = (CsrfToken) request.getAttribute("_csrf");
+        return new CsrfResponse(csrf.getToken());
+    }
+
+    public record CsrfResponse(String token) {}
 }

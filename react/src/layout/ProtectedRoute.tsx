@@ -1,7 +1,8 @@
 import {Navigate, useLocation} from "react-router-dom";
 import {useContextAuth} from "../auth/context/useContextAuth.tsx";
+import React, {PropsWithChildren} from "react";
 
-const ProtectedRoute = ({children}) => {
+const ProtectedRoute: React.FC<PropsWithChildren> = ({children}) => {
   const context = useContextAuth();
   const location = useLocation();
 

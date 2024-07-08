@@ -3,27 +3,30 @@ package ram0973.web.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.coyote.BadRequestException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ram0973.web.dto.PagedPersonsResponseDto;
-import ram0973.web.dto.PersonEnableRequestDto;
 import ram0973.web.dto.PersonRequestDto;
 import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.exceptions.EntityPersistActionException;
+import ram0973.web.exceptions.ForbiddenOperationException;
 import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.model.Person;
 import ram0973.web.service.PersonService;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/persons")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+@Log4j2
 public class PersonController {
     private final PersonService personService;
 
@@ -74,8 +77,6 @@ public class PersonController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deletePerson(@PathVariable("id") int id) {
-        Person person = personService.findById(id).orElseThrow(
-            () -> new NoSuchEntityException("No such Person with id: " + id));
         personService.deletePerson(id);
         return ResponseEntity.ok(null);
     }

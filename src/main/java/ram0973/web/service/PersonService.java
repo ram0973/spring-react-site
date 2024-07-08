@@ -3,6 +3,7 @@ package ram0973.web.service;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import ram0973.web.dto.PagedPersonsResponseDto;
 import ram0973.web.dto.PersonEnableRequestDto;
 import ram0973.web.dto.PersonRequestDto;
+import ram0973.web.exceptions.ForbiddenOperationException;
 import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.mappers.PersonMapper;
 import ram0973.web.model.Person;
@@ -27,6 +29,9 @@ public class PersonService {
 
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${custom.admin.email}")
+    private String adminEmail;
 
     private Optional<PagedPersonsResponseDto> getPagedPersonsResponseDto(@NotNull Page<Person> pagedPersons) {
         List<Person> Persons = pagedPersons.getContent();
@@ -64,6 +69,11 @@ public class PersonService {
     }
 
     public void deletePerson(int id) {
+        Person person = findById(id).orElseThrow(
+            () -> new NoSuchEntityException("No such Person with id: " + id));
+        if (person.getEmail().equals(adminEmail)) {
+            throw new ForbiddenOperationException("You cannot delete admin");
+        }
         personRepository.deleteById(id);
     }
 

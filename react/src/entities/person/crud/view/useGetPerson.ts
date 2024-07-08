@@ -1,4 +1,4 @@
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 
 const getPersonApi = async (id: number | undefined) => {
