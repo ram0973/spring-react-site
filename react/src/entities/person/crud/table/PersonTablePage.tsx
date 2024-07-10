@@ -72,7 +72,7 @@ export const PersonTablePage: React.FC = () => {
           </button>{' '}
           <button
             onClick={() => {
-              if (!query.isPlaceholderData && query.data.hasMore) {
+              if (!query.isPlaceholderData && query.data.totalPages > page) {
                 setPage((old) => old + 1)
               }
             }}
