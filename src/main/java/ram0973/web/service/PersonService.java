@@ -11,8 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ram0973.web.dto.PagedPersonsResponseDto;
-import ram0973.web.dto.PersonEnableRequestDto;
-import ram0973.web.dto.PersonRequestDto;
+import ram0973.web.dto.PersonCreateRequestDto;
+import ram0973.web.dto.PersonUpdateRequestDto;
 import ram0973.web.exceptions.ForbiddenOperationException;
 import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.mappers.PersonMapper;
@@ -62,7 +62,7 @@ public class PersonService {
         return personRepository.findByEmailIgnoreCase(email);
     }
 
-    public Optional<Person> createPerson(@NotNull PersonRequestDto dto) {
+    public Optional<Person> createPerson(@NotNull PersonCreateRequestDto dto) {
         Person person = PersonMapper.INSTANCE.personFromPersonRequestDto(dto);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         return Optional.of(personRepository.save(person));
@@ -72,19 +72,12 @@ public class PersonService {
         Person person = findById(id).orElseThrow(
             () -> new NoSuchEntityException("No such Person with id: " + id));
         if (person.getEmail().equals(adminEmail)) {
-            throw new ForbiddenOperationException("You cannot delete admin");
+            throw new ForbiddenOperationException("You cannot delete admin account");
         }
         personRepository.deleteById(id);
     }
 
-    public Optional<Person> patchPersonEnable(int id, @NotNull PersonEnableRequestDto dto) {
-        Person person = personRepository.findById(id).orElseThrow(
-            () -> new NoSuchEntityException("No such Person with id: " + id));
-        person.setEnabled(dto.enable());
-        return Optional.of(personRepository.save(person));
-    }
-
-    public Optional<Person> updatePerson(int id, @NotNull PersonRequestDto dto) {
+    public Optional<Person> updatePerson(int id, @NotNull PersonUpdateRequestDto dto) {
         Person person = personRepository.findById(id).orElseThrow(
             () -> new NoSuchEntityException("No such Person with id: " + id));
         PersonMapper.INSTANCE.update(person, dto);

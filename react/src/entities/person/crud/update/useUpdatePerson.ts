@@ -11,10 +11,10 @@ export const useUpdatePerson = () => {
   return useMutation({
     mutationKey: ['updatePerson'],
     mutationFn: updatePersonApi,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({queryKey: ["persons"]})
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["persons"]}).catch((reason)=>console.log(reason))
     },
-    onError: async (error) => {
+    onError: (error) => {
       console.log(error)
     },
   });

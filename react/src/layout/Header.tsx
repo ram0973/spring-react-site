@@ -16,15 +16,18 @@ const Header = () => {
       <Spacer/>
       <ButtonGroup gap='2'>
         {context?.person?.email &&
-          <Button colorScheme='twitter'><Link to={"/admin/persons"}>Admin</Link></Button>}
-        {!context?.person?.email && <Button colorScheme='twitter'><Link to={"/signup"}>Sign Up</Link></Button>}
+          <Link to={"/admin/persons"}><Button colorScheme='twitter'>Admin</Button></Link>
+        }
+        {!context?.person?.email && <Link to={"/signup"}><Button colorScheme='twitter'>Sign Up</Button></Link>}
         {
-          context?.person?.email ?
-          <LogoutButton/> :
-          <Button colorScheme='twitter'><GenericAvatarIcon boxSize={4}/><Link to={"/login"}> Login</Link></Button>
+          context?.person?.email ? <LogoutButton/> :
+            <Link to={"/login"}>
+              <Button colorScheme="twitter">Login</Button>
+            </Link>
         }
       </ButtonGroup>
-    </Flex></>
+    </Flex>
+    </>
   );
 };
 

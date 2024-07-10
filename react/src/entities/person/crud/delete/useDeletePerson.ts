@@ -1,12 +1,21 @@
-import {DefaultError, useMutation, UseMutationResult, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
-import {useToast} from "@chakra-ui/toast";
 
-const deletePersonApi = (id: number) => {
-   return axiosInstance.delete(`/api/v1/persons/${id}`);
+const deletePersonApi = async (id: number) => {
+  return await axiosInstance.delete(`/api/v1/persons/${id}`)
+  // .then(function (axiosResponse) {
+  //   if (axiosResponse instanceof AxiosError) {
+  //     throw new Error(axiosResponse.response?.data.message);
+  //   }
+  // })
+  // .catch(function (error) {
+  //   // обработка ошибки
+  //   console.log("axios error:", error);
+  //   return error;
+  // })
 }
 
-export const useDeletePerson = (): UseMutationResult => {
+export const useDeletePerson = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['deletePerson'],
@@ -16,7 +25,7 @@ export const useDeletePerson = (): UseMutationResult => {
       console.info("successfully deleted person");
     },
     onError: (error: Error) => {
-      console.error(error);
-    },
-  })
+      console.log(error);
+    }
+  });
 }

@@ -1,9 +1,24 @@
-import {PersonForm} from "../PersonForm.tsx";
+import {PersonCreateForm} from "./PersonCreateForm.tsx";
+import {useCreatePerson} from "./useCreatePerson.ts";
+import {useNavigate} from "react-router-dom";
+import {SubmitHandler} from "react-hook-form";
 import {Person} from "../../model/Person.ts";
-import React from "react";
+import {AxiosError} from "axios";
+import {AxiosErrorResponseDto} from "../../../../services/axios/AxiosErrorResponseDto.ts";
 
-export const PersonCreatePage: React.FC = () => {
-  const defaultPerson: Person = {id: 0, email: "", enabled: true}
-  return <PersonForm isCreate={true} preloadedValues={defaultPerson} isError={false} isLoading={false}
-                      errorMessage={""} />;
-};
+export const PersonCreatePage = () => {
+  const createMutation = useCreatePerson()
+  const errorData = (createMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto
+  const navigate = useNavigate();
+
+  const onSubmitHandler: SubmitHandler<Person> = async (person: Person) => {
+    const mutationResult = await createMutation.mutateAsync(person);
+    const id = mutationResult.data.id;
+    navigate(`/admin/persons/view/${id}`);
+  }
+
+  return (<PersonCreateForm isError={createMutation.isError}
+                            isLoading={createMutation.isPending}
+                            errorMessage={errorData?.message}
+                            onFormSubmit={onSubmitHandler} />);
+}

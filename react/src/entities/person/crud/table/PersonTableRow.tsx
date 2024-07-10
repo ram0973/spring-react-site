@@ -15,29 +15,37 @@ type PersonTableRowProps = {
 export const PersonTableRow: React.FC<PersonTableRowProps> = ({person}) => {
   const deleteModalDisclosure = useDisclosure();
   const deleteMutation = useDeletePerson();
+  const toast = useToast();
 
-  async function deletePersonHandle(id: number) {
+  function deletePersonHandle(id: number) {
     deleteModalDisclosure.onClose();
-    try {
-      event.preventDefault()
-      await deleteMutation.mutateAsync(id);
-    } catch (error) {
-      console.error(error)
-    }
+    deleteMutation.mutateAsync(id)
+      .then(() => toast({title: "Success!", description: "Successfully deleted person"}))
+      .catch((error) => toast(
+        {
+          title: "Error!",
+          description: error.response.data.message,
+          status: "error",
+        }
+      ))
   }
 
   return (
     <Tr key={person.id}>
       <Td>{person.id}</Td>
-      <Td><HStack><Avatar size="sm" name={person.email}/><Text>{person.email}</Text></HStack></Td>
+      <Td><HStack><Avatar size="2xs" name={person.email}/><Text>{person.email}</Text></HStack></Td>
       <Td><Switch disabled id='isEnabled' isChecked={person.enabled} style={{cursor: 'pointer'}}/></Td>
-      <Td><HStack>
-        <Link to={`/admin/persons/update/${person.id}`}><EditIcon style={{cursor: 'pointer'}}/></Link>
-        <DeleteIcon onClick={deleteModalDisclosure.onOpen} style={{cursor: 'pointer'}}/>
-        <PersonDeleteModal isOpen={deleteModalDisclosure.isOpen} onClose={deleteModalDisclosure.onClose}
-                           email={person.email} dataKey={person.id} onClick={(event) => deletePersonHandle(event, person.id)}/>
-        <Link to={`/admin/persons/${person.id}`}><ViewIcon style={{cursor: 'pointer'}}/></Link>
-      </HStack></Td>
+      <Td>
+        <HStack>
+          <Link to={`/admin/persons/update/${person.id}`}><EditIcon style={{cursor: 'pointer'}}/></Link>
+          <DeleteIcon onClick={deleteModalDisclosure.onOpen} style={{cursor: 'pointer'}}/>
+          <PersonDeleteModal isOpen={deleteModalDisclosure.isOpen}
+                             onClose={deleteModalDisclosure.onClose}
+                             email={person.email} dataKey={person.id}
+                             onClick={async () => deletePersonHandle(person.id)}/>
+          <Link to={`/admin/persons/view/${person.id}`}><ViewIcon style={{cursor: 'pointer'}}/></Link>
+        </HStack>
+      </Td>
     </Tr>
   );
 }

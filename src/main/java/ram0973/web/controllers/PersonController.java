@@ -4,17 +4,15 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ram0973.web.dto.PagedPersonsResponseDto;
-import ram0973.web.dto.PersonRequestDto;
+import ram0973.web.dto.PersonCreateRequestDto;
+import ram0973.web.dto.PersonUpdateRequestDto;
 import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.exceptions.EntityPersistActionException;
-import ram0973.web.exceptions.ForbiddenOperationException;
 import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.model.Person;
 import ram0973.web.service.PersonService;
@@ -54,23 +52,23 @@ public class PersonController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Person> createPerson(@Valid @RequestBody @NotNull PersonRequestDto personRequestDto) {
-        Optional<Person> optionalPerson = personService.findPersonByEmailIgnoreCase(personRequestDto.email());
+    public ResponseEntity<Person> createPerson(@Valid @RequestBody @NotNull PersonCreateRequestDto dto) {
+        Optional<Person> optionalPerson = personService.findPersonByEmailIgnoreCase(dto.email());
         if (optionalPerson.isPresent()) {
             throw new EntityAlreadyExistsException("Email already in use");
         } else {
-            Person person = personService.createPerson(personRequestDto).orElseThrow(
-                () -> new EntityPersistActionException("Error while create Person: " + personRequestDto));
+            Person person = personService.createPerson(dto).orElseThrow(
+                () -> new EntityPersistActionException("Error while create Person: " + dto));
             return ResponseEntity.ok(person);
         }
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Person> updatePerson(@PathVariable("id") int id, @Valid @RequestBody PersonRequestDto personRequestDto) {
-        Person person = personService.updatePerson(id, personRequestDto).orElseThrow(
+    public ResponseEntity<Person> updatePerson(@PathVariable("id") int id, @Valid @RequestBody PersonUpdateRequestDto dto) {
+        Person person = personService.updatePerson(id, dto).orElseThrow(
             () -> new EntityPersistActionException(
-                String.format("Error while update Person with id: %d and body: %s", id, personRequestDto)));
+                String.format("Error while update Person with id: %d and body: %s", id, dto)));
         return ResponseEntity.ok(person);
     }
 

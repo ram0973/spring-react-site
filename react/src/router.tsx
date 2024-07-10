@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
         element: <PersonUpdatePage/>
       },
       {
-        path: "persons/:id",
+        path: "persons/view/:id",
         element: <PersonViewPage/>
       },
     ],

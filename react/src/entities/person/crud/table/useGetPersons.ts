@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 
 const getPersonsApi = async () => {
-  return (await axiosInstance.get('/api/v1/persons')).data.persons;
+  return (await axiosInstance.get('/api/v1/persons')).data;
 }
 
 export function useGetPersons() {
