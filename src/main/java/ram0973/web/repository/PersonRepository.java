@@ -12,7 +12,7 @@ import ram0973.web.model.Person;
 import java.util.Optional;
 
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Integer> {
+public interface ArticleRepository extends JpaRepository<Person, Integer> {
 
     @Query("SELECT p FROM Person p WHERE p.email = LOWER(:email)")
     Optional<Person> findByEmailIgnoreCase(@Param(value = "email") String email);

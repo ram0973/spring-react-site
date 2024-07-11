@@ -14,10 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -38,7 +35,7 @@ public class Person extends BaseModel implements Serializable {
     @Size(max = 128)
     private String password;
 
-    @Column(name = "account_enable")
+    @Column(name = "account_enabled")
     private boolean enabled = true;
 
     @Column(name = "credentials_expired")
@@ -56,6 +53,10 @@ public class Person extends BaseModel implements Serializable {
     @Column(name = "person_roles")
     @ElementCollection(fetch = FetchType.EAGER)
     private final Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "author")
+    @JsonIgnore //needed to avoid infinite recursion
+    private List<Article> articles;
 
     public void addRole(Role role) {
         this.roles.add(role);
