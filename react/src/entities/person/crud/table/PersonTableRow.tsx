@@ -37,6 +37,7 @@ export const PersonTableRow: React.FC<PersonTableRowProps> = ({person}) => {
       <Td><Switch disabled id='isEnabled' isChecked={person.enabled} style={{cursor: 'pointer'}}/></Td>
       <Td>
         <HStack>
+
           <Link to={`/admin/persons/update/${person.id}`}><EditIcon style={{cursor: 'pointer'}}/></Link>
           <DeleteIcon onClick={deleteModalDisclosure.onOpen} style={{cursor: 'pointer'}}/>
           <PersonDeleteModal isOpen={deleteModalDisclosure.isOpen}

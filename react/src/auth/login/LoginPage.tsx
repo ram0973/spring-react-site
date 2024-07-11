@@ -2,11 +2,11 @@ import {LoginForm} from "./LoginForm.tsx";
 import {useLogin} from "./useLogin.ts";
 import {useLocation, useNavigate} from "react-router-dom";
 import {Credentials} from "../model/Credentials.ts";
-import {useContextAuth} from "../context/useContextAuth.tsx";
+import {useAuthContext} from "../context/useAuthContext.tsx";
 import React from "react";
 
 export const LoginPage: React.FC = () => {
-  const context = useContextAuth();
+  const context = useAuthContext();
   const location = useLocation();
   const mutation = useLogin();
   const navigate = useNavigate();

@@ -1,15 +1,11 @@
 import {Link} from "react-router-dom";
-import {VStack} from "@chakra-ui/react";
+import {Button, VStack} from "@chakra-ui/react";
 
 const AdminNav = () => {
   return (
     <VStack alignSelf={"flex-start"}>
-      <h2>
-        <Link to={"/admin/persons"}>Persons list</Link>
-      </h2>
-      <h2>
-        <Link to={"/admin/persons"}>Articless list</Link>
-      </h2>
+      <Link to={"/admin/persons"}><Button>Persons</Button></Link>
+      <Link to={"/admin/articles"}><Button>Articles</Button></Link>
     </VStack>
   );
 };

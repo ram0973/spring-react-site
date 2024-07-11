@@ -1,12 +1,12 @@
 import {useMutation} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
-import {useContextAuth} from "../context/useContextAuth.tsx";
+import {useAuthContext} from "../context/useAuthContext.tsx";
 import {axiosInstance} from "../../services/axios/axiosInstance.ts";
 
 const logoutApi = () => axiosInstance.post('/api/v1/auth/logout');
 
 export const useLogout = () => {
-  const context = useContextAuth();
+  const context = useAuthContext();
   const navigate = useNavigate();
 
   return useMutation({

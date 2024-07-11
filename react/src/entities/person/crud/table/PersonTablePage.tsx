@@ -2,7 +2,7 @@ import {
   Button,
   Flex,
   Heading,
-  HStack,
+  HStack, Spinner,
   Table,
   TableContainer,
   Tbody, Td,
@@ -15,8 +15,6 @@ import {
 import {Link} from "react-router-dom";
 import {AddIcon} from "@chakra-ui/icons";
 import React from "react";
-import {PersonTableRows} from "./PersonTableRows.tsx";
-import Pagination from "@choc-ui/paginator";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {AxiosError} from "axios";
@@ -50,7 +48,7 @@ export const PersonTablePage: React.FC = () => {
         <Table variant='striped'>
           <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
           <Tbody>
-            { query.isPending ? <Tr><Td>Loading...</Td></Tr> :
+            { query.isPending ? <Spinner/> :
               query.isError ? <Tr><Td>Error: {(query.error as AxiosError).message}</Td></Tr> :
               query.data.persons.map((person: Person) => <PersonTableRow person={person} key={person.id} />)
             }
@@ -60,28 +58,34 @@ export const PersonTablePage: React.FC = () => {
           </Tfoot>
         </Table>
         <Flex bg={"gray.100"} p={2} alignItems="center" justifyContent="center">
-          {/*int currentPage, long totalItems, int totalPages*/}
-          <Pagination defaultCurrent={query.data?.currentPage} total={query.data?.totalItems}
-                      paginationProps={{ display: "flex", }} pageNeighbours={2} currentPage={page} setCurrentPage={setPage}/>
-          <span>Current Page: {page + 1}</span>
-          <button
-            onClick={() => setPage((old) => Math.max(old - 1, 0))}
-            disabled={page === 0}
+          {/* data: persons[], int currentPage, long totalItems, int totalPages*/}
+          <span>Page: {page + 1} of {query.data?.totalPages}</span>
+          <Button onClick={() => setPage(0)}
+                  isDisabled={!query.isPlaceholderData && page < (query.data?.totalPages - 1)}
           >
-            Previous Page
-          </button>{' '}
-          <button
+            First
+          </Button>
+          <Button onClick={() => setPage((old) => Math.max(old - 1, 0))}
+                  isDisabled={!query.isPlaceholderData && page < (query.data?.totalPages - 1)}
+          >
+            Previous
+          </Button>
+          <Button
             onClick={() => {
-              if (!query.isPlaceholderData && query.data.totalPages > page) {
+              if (!query.isPlaceholderData && page < (query.data?.totalPages - 1)) {
                 setPage((old) => old + 1)
               }
             }}
-            // Disable the Next Page button until we know a next page is available
-            disabled={query.isPlaceholderData || !query.data?.hasMore}
+            isDisabled={query.isPlaceholderData || page == query.data?.totalPages - 1}
           >
-            Next Page
-          </button>
-          {query.isFetching ? <span> Loading...</span> : null}{' '}
+            Next
+          </Button>
+          <Button onClick={() => setPage(query.data?.totalPages - 1)}
+                  isDisabled={query.isPlaceholderData || page == query.data?.totalPages - 1}
+          >
+            Last
+          </Button>
+          {query.isFetching ? <Spinner/> : ""}
         </Flex>
       </TableContainer>
     </VStack>

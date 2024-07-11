@@ -11,14 +11,12 @@ import {useUpdatePerson} from "./useUpdatePerson.ts";
 export const PersonUpdatePage = () => {
   const updateMutation = useUpdatePerson()
   const navigate = useNavigate();
-  const params = useParams();
-  const id = Number(params?.id)
-  const query = useGetPerson(id);
+  const {id} = useParams();
+  const query = useGetPerson(parseInt(id));
   const errorData = (query.error as AxiosError)?.response?.data as AxiosErrorResponseDto
 
   const onSubmitHandler: SubmitHandler<PersonUpdateFormData> = (data) => {
     updateMutation.mutate(data);
-    console.log(data);
     navigate(`/admin/persons/view/${data.id}`);
   }
   return (<PersonUpdateForm person={query.data} isError={query.isError} isLoading={query.isPending}

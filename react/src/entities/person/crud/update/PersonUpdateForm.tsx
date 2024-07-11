@@ -44,12 +44,14 @@ export const PersonUpdateForm: React.FC<PersonUpdateFormProps> =
     });
 
     useEffect(() => {
-      const defaultValues = {
-        id: person.id,
-        email: person.email,
-        enabled: person.enabled,
-      };
-      reset(defaultValues);
+      if (person) {
+        const defaultValues = {
+          id: person.id,
+          email: person.email,
+          enabled: person.enabled,
+        };
+        reset(defaultValues);
+      }
     }, [person, reset]);
 
     return (
