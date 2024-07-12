@@ -7,7 +7,7 @@ import {Container, HStack} from "@chakra-ui/react";
 const AdminLayout = () => {
 
   return (
-    <Container minW={"1280px"}>
+    <Container maxW={"1280px"}>
       <Header/>
       <HStack>
         <AdminNav/>

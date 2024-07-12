@@ -6,15 +6,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.exceptions.ForbiddenOperationException;
@@ -85,6 +89,24 @@ public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
     @ResponseBody
     protected ApiExceptionResponseDto handleForbiddenOperationException(Exception ex, WebRequest request) {
         return new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
+        HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        return new ResponseEntity<>(
+            new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNSUPPORTED_MEDIA_TYPE),
+            HttpStatus.UNSUPPORTED_MEDIA_TYPE
+        );
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+        HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        return new ResponseEntity<>(
+            new ApiExceptionResponseDto(getUrl(request), ex.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY),
+            HttpStatus.UNPROCESSABLE_ENTITY
+        );
     }
 
     private String getUrl(WebRequest request) {

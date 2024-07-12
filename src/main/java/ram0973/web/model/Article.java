@@ -40,7 +40,6 @@ public class Article extends BaseModel {
 
     private String image;
 
-    @Column(name = "article_enabled")
     private boolean enabled = true;
 
     @ManyToOne

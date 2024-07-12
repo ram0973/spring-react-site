@@ -8,11 +8,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
-import ram0973.web.dto.LoginRequestDto;
-import ram0973.web.dto.RegisterRequestDto;
+import ram0973.web.dto.auth.LoginRequestDto;
+import ram0973.web.dto.auth.RegisterRequestDto;
 import ram0973.web.model.Person;
 import ram0973.web.service.AuthService;
 

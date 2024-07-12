@@ -5,7 +5,7 @@ import {Container} from "@chakra-ui/react";
 
 export const FrontLayout = () => {
   return (
-    <Container minW={"1280px"}>
+    <Container maxW={"1280px"}>
       <Header />
       <Outlet/>
       <Footer/>

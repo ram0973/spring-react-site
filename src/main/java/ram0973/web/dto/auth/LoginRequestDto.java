@@ -1,4 +1,4 @@
-package ram0973.web.dto;
+package ram0973.web.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

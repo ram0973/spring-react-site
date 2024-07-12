@@ -46,7 +46,7 @@ export const PersonTablePage: React.FC = () => {
       </HStack>
       <TableContainer w={"max-content"}>
         <Table variant='striped'>
-          <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr></Thead>
+          <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Created</Th><Th>Actions</Th></Tr></Thead>
           <Tbody>
             { query.isPending ? <Spinner/> :
               query.isError ? <Tr><Td>Error: {(query.error as AxiosError).message}</Td></Tr> :
@@ -54,7 +54,7 @@ export const PersonTablePage: React.FC = () => {
             }
           </Tbody>
           <Tfoot>
-            <Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Actions</Th></Tr>
+            <Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Created</Th><Th>Actions</Th></Tr>
           </Tfoot>
         </Table>
         <Flex bg={"gray.100"} p={2} alignItems="center" justifyContent="center">

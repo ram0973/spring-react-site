@@ -10,17 +10,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ram0973.web.dto.PagedArticlesResponseDto;
-import ram0973.web.dto.PagedPersonsResponseDto;
-import ram0973.web.dto.PersonCreateRequestDto;
-import ram0973.web.dto.PersonUpdateRequestDto;
-import ram0973.web.exceptions.ForbiddenOperationException;
+import ram0973.web.dto.articles.ArticleCreateRequestDto;
+import ram0973.web.dto.articles.ArticleUpdateRequestDto;
+import ram0973.web.dto.articles.PagedArticlesResponseDto;
 import ram0973.web.exceptions.NoSuchEntityException;
-import ram0973.web.mappers.PersonMapper;
+import ram0973.web.mappers.ArticleMapper;
 import ram0973.web.model.Article;
-import ram0973.web.model.Person;
 import ram0973.web.repository.ArticleRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,53 +36,52 @@ public class ArticleService {
     private String adminEmail;
 
     private Optional<PagedArticlesResponseDto> getPagedArticlesResponseDto(@NotNull Page<Article> pagedArticles) {
-        List<Person> Persons = pagedArticles.getContent();
-        if (Persons.isEmpty()) {
+        List<Article> articles = pagedArticles.getContent();
+        if (articles.isEmpty()) {
             return Optional.empty();
         } else {
-            PagedPersonsResponseDto PagedPersonsResponseDto = new PagedPersonsResponseDto(Persons, pagedArticles.getNumber(),
-                pagedArticles.getTotalElements(), pagedArticles.getTotalPages());
-            return Optional.of(PagedPersonsResponseDto);
+            PagedArticlesResponseDto pagedArticlesResponseDto = new PagedArticlesResponseDto(
+                articles, pagedArticles.getNumber(), pagedArticles.getTotalElements(), pagedArticles.getTotalPages());
+            return Optional.of(pagedArticlesResponseDto);
         }
     }
 
-    public void savePerson(@NotNull Person person) {
-        articleRepository.save(person);
+    public void saveArticle(@NotNull Article article) {
+        articleRepository.save(article);
     }
 
-    public Optional<PagedPersonsResponseDto> findAll(int page, int size, String[] sort) {
+    public Optional<PagedArticlesResponseDto> findAll(int page, int size, String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(PagedEntityUtils.getSortOrders(sort)));
-        Page<Person> pagedPersons = articleRepository.findAll(pageable);
-        return getPagedPersonsResponseDto(pagedPersons);
+        Page<Article> pagedArticles = articleRepository.findAll(pageable);
+        return getPagedArticlesResponseDto(pagedArticles);
     }
 
-    public Optional<Person> findById(int id) {
+    public Optional<Article> findById(int id) {
         return articleRepository.findById(id);
     }
 
-    public Optional<Person> findPersonByEmailIgnoreCase(String email) {
-        return articleRepository.findByEmailIgnoreCase(email);
+    public Optional<Article> findArticleBySlug(@NotNull String slug) {
+        return articleRepository.findBySlug(slug);
     }
 
-    public Optional<Person> createPerson(@NotNull PersonCreateRequestDto dto) {
-        Person person = PersonMapper.INSTANCE.personFromPersonRequestDto(dto);
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
-        return Optional.of(articleRepository.save(person));
+    public Optional<Article> createArticle(@NotNull ArticleCreateRequestDto dto) throws IOException {
+        Article article = ArticleMapper.INSTANCE.from(dto);
+        article.setImage(dto.image().getName());
+        Path path = Path.of("");
+        Files.copy(dto.image().getInputStream(), path);
+        return Optional.of(articleRepository.save(article));
     }
 
-    public void deletePerson(int id) {
-        Person person = findById(id).orElseThrow(
-            () -> new NoSuchEntityException("No such Person with id: " + id));
-        if (person.getEmail().equals(adminEmail)) {
-            throw new ForbiddenOperationException("You cannot delete admin account");
-        }
+    public void deleteArticle(int id) {
+        Article article = findById(id).orElseThrow(
+            () -> new NoSuchEntityException("No such Article with id: " + id));
         articleRepository.deleteById(id);
     }
 
-    public Optional<Person> updatePerson(int id, @NotNull PersonUpdateRequestDto dto) {
-        Person person = articleRepository.findById(id).orElseThrow(
-            () -> new NoSuchEntityException("No such Person with id: " + id));
-        PersonMapper.INSTANCE.update(person, dto);
-        return Optional.of(articleRepository.save(person));
+    public Optional<Article> updateArticle(int id, @NotNull ArticleUpdateRequestDto dto) {
+        Article article = articleRepository.findById(id).orElseThrow(
+            () -> new NoSuchEntityException("No such Article with id: " + id));
+        ArticleMapper.INSTANCE.update(article, dto);
+        return Optional.of(articleRepository.save(article));
     }
 }

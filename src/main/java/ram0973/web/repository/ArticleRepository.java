@@ -16,4 +16,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     @NonNull
     Page<Article> findAll(@NonNull Pageable pageable);
+
+    Optional<Article> findBySlug(String slug);
 }

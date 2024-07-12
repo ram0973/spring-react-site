@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ram0973.web.dto.PagedPersonsResponseDto;
-import ram0973.web.dto.PersonCreateRequestDto;
-import ram0973.web.dto.PersonUpdateRequestDto;
+import ram0973.web.dto.persons.PagedPersonsResponseDto;
+import ram0973.web.dto.persons.PersonCreateRequestDto;
+import ram0973.web.dto.persons.PersonUpdateRequestDto;
 import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.exceptions.EntityPersistActionException;
 import ram0973.web.exceptions.NoSuchEntityException;
@@ -45,9 +45,9 @@ public class PersonController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Person> getPersonById(@PathVariable("id") int id) {
-        Person Person = personService.findById(id).orElseThrow(
-            () -> new NoSuchEntityException("No such Person with id: " + id));
-        return ResponseEntity.ok(Person);
+        Person person = personService.findById(id).orElseThrow(
+            () -> new NoSuchEntityException("No such person with id: " + id));
+        return ResponseEntity.ok(person);
     }
 
     @PostMapping("")
@@ -65,7 +65,8 @@ public class PersonController {
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Person> updatePerson(@PathVariable("id") int id, @Valid @RequestBody PersonUpdateRequestDto dto) {
+    public ResponseEntity<Person> updatePerson(
+        @PathVariable("id") int id, @Valid @RequestBody PersonUpdateRequestDto dto) {
         Person person = personService.updatePerson(id, dto).orElseThrow(
             () -> new EntityPersistActionException(
                 String.format("Error while update Person with id: %d and body: %s", id, dto)));

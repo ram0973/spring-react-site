@@ -1,8 +1,7 @@
-package ram0973.web.dto;
+package ram0973.web.dto.persons;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 public record PersonUpdateRequestDto(
     boolean enabled,

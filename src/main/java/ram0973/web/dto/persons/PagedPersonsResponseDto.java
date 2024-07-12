@@ -1,4 +1,4 @@
-package ram0973.web.dto;
+package ram0973.web.dto.persons;
 
 import ram0973.web.model.Person;
 

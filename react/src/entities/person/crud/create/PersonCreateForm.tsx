@@ -39,7 +39,7 @@ export const PersonCreateForm: React.FC<UserCreateFormProps> =
       <VStack flexGrow={1}>
         <form onSubmit={form.handleSubmit(onFormSubmit)}>
           <Center maxW="lg" w="lg" shadow="lg" backgroundColor="white" rounded='md'>
-            <Stack spacing="2" pt="16" pb="16">
+            <Stack spacing="2" pt="8" pb="8">
               <Center pb="8">
                 <VStack>
                   <Image boxSize="64px" src={"/react.svg"}/>

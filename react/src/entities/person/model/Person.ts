@@ -1,5 +1,6 @@
 export interface Person {
   id: number,
   email: string,
-  enabled: boolean
+  enabled: boolean,
+  dateCreated: string,
 }

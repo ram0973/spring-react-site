@@ -3,7 +3,7 @@ import {Person} from "../../model/Person.ts";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 
 const createPersonApi = async (person: Person) => {
-  return await axiosInstance.post("/api/v1/persons", person);
+  return (await axiosInstance.post("/api/v1/persons", person)).data;
 }
 
 export const useCreatePerson = () => {

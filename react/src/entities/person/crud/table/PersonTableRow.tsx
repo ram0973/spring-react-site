@@ -35,6 +35,7 @@ export const PersonTableRow: React.FC<PersonTableRowProps> = ({person}) => {
       <Td>{person.id}</Td>
       <Td><HStack><Avatar size="2xs" name={person.email}/><Text>{person.email}</Text></HStack></Td>
       <Td><Switch disabled id='isEnabled' isChecked={person.enabled} style={{cursor: 'pointer'}}/></Td>
+      <Td>{new Date(person.dateCreated).toLocaleDateString()}</Td>
       <Td>
         <HStack>
 

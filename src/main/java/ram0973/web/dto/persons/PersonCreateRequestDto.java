@@ -1,4 +1,4 @@
-package ram0973.web.dto;
+package ram0973.web.dto.persons;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

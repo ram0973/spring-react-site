@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/persons/**").authenticated()
+                .requestMatchers("/api/v1/articles/**").authenticated()
                 //.anyRequest().rememberMe()
                 .anyRequest().denyAll()
             )
