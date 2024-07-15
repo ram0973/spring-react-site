@@ -9,7 +9,7 @@ const createArticleApi = async (article) => {
   //formData.append("files", image);
   //article = { ...article, image: image.name };
   //formData.append("article", JSON.stringify(article));
-  return await axiosInstance.post("/api/v1/articles", article);
+  return await axiosInstance.post("api/v1/articles", article);
 
 }
 

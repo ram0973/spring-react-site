@@ -11,20 +11,20 @@ import java.util.List;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
-@Configuration
-public class CorsConfig {
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://localhost:5173/", "https://localhost:5174/")); // React
-        configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of(CONTENT_TYPE));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-}
+//@Configuration
+//public class CorsConfig {
+//
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(List.of("https://localhost:5173/", "https://localhost:5174/")); // React
+//        configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE", "OPTIONS"));
+//        configuration.setAllowedHeaders(List.of(CONTENT_TYPE));
+//        configuration.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
+//
+//}

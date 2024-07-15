@@ -37,10 +37,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(o -> o
                 .requestMatchers("/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/v1/persons/**").authenticated()
-                .requestMatchers("/api/v1/articles/**").authenticated()
+                //.requestMatchers("/api/v1/persons/**").authenticated()
+                //.requestMatchers("/api/v1/articles/**").authenticated()
                 //.anyRequest().rememberMe()
-                .anyRequest().denyAll()
+                .anyRequest().permitAll()
             )
 //            .rememberMe(o -> o
 //                .tokenValiditySeconds(60 * 60 * 24 * 365)
@@ -51,7 +51,8 @@ public class SecurityConfig {
 //                .rememberMeCookieDomain("localhost")
 //            )
             .csrf(o -> o.disable())
-            .cors(Customizer.withDefaults()) // o -> o.disable())
+            //.cors(Customizer.withDefaults()) // o -> o.disable())
+            .cors(o -> o.disable())
             .httpBasic(o -> o.disable())
             .formLogin(o -> o.disable())
             //.logout(o -> o.deleteCookies("JSESSIONID").permitAll())

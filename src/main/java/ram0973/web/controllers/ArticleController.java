@@ -7,22 +7,26 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import ram0973.web.dto.articles.ArticleCreateRequestDto;
 import ram0973.web.dto.articles.ArticleUpdateRequestDto;
 import ram0973.web.dto.articles.PagedArticlesResponseDto;
-import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.exceptions.EntityPersistActionException;
 import ram0973.web.exceptions.NoSuchEntityException;
 import ram0973.web.model.Article;
 import ram0973.web.service.ArticleService;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Calendar;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.TimeZone;
 
 @RestController
-@RequestMapping("/api/v1/articles")
+@RequestMapping(name = "/api/v1/articles/")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @Log4j2
@@ -51,9 +55,13 @@ public class ArticleController {
         return ResponseEntity.ok(article);
     }
 
-    @PostMapping(name="", consumes = {"multipart/form-data"})
+    public static Path getResourceAsFile(String relativeFilePath) throws FileNotFoundException {
+        return ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + relativeFilePath).toPath();
+    }
+
+    @PostMapping(""/*, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }*/)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Article> createArticle(@NotNull @Valid @ModelAttribute ArticleCreateRequestDto dto) throws IOException {
+    public ResponseEntity<Article> createArticle(@NotNull @Valid @RequestBody ArticleCreateRequestDto dto) throws IOException {
         log.error(dto);
 //        Optional<Article> optionalArticle = articleService.findArticleBySlug(dto);
 //        if (optionalArticle.isPresent()) {
@@ -63,7 +71,23 @@ public class ArticleController {
 //            //    () -> new EntityPersistActionException("Error while create Article: " + dto));
 //            return ResponseEntity.ok(dto);
 //        }
-        Article article = articleService.createArticle(dto);
+        //Article article = articleService.createArticle(dto);
+        Article article = new Article();
+        if (dto.image() != null && dto.image().getOriginalFilename() != null) {
+            Path root = getResourceAsFile("static/upload/images");
+            String originalFileName = dto.image().getOriginalFilename();
+            String originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1);
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            String year = String.valueOf(cal.get(Calendar.YEAR));
+            String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+            String day = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+
+            Path pathWithDate = Files.createDirectories(Path.of(root.toString(), year, month, day));
+            Path newFilePath = Files.createTempFile(pathWithDate, "", "." + originalFileExtension);
+
+            dto.image().transferTo(newFilePath);
+            article.setImage(newFilePath.toString());
+        }
         return ResponseEntity.ok(article);
     }
 
