@@ -1,5 +1,6 @@
 package ram0973.web.config;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -27,11 +28,26 @@ import ram0973.web.exceptions.dto.ApiExceptionResponseDto;
 import ram0973.web.exceptions.dto.FieldViolation;
 import ram0973.web.exceptions.dto.ValidationExceptionResponseDto;
 
+import java.security.Principal;
 import java.util.List;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RestControllerAdvice
 @Slf4j
 public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
+
+// TODO: inspect this (a piece of code from docs)
+//    @ModelAttribute("currentUserName")
+//    String currentUser(Principal principal) {
+//        return (principal != null) ? principal.getName() : null;
+//    }
+//
+//    @ModelAttribute("httpSession")
+//    HttpSession httpSession(HttpSession httpSession) {
+//        return httpSession;
+//    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, WebRequest request) {

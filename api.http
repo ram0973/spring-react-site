@@ -45,7 +45,7 @@ Content-Type: application/json
 
 
 ### Get persons with page 0
-GET http://localhost:8080/api/v1/persons/l
+GET http://localhost:8080/api/v1/persons/1
 Content-Type: application/json
 
 
@@ -57,3 +57,15 @@ Content-Type: application/json
 {
   "title": "Article title"
 }
+
+
+### Get article with id == 1
+GET http://localhost:8080/api/v1/articles/1
+Content-Type: application/json
+
+
+################### TAGS ###################
+
+### Get tag with id == 1
+GET http://localhost:8080/api/v1/tags/1
+Content-Type: application/json

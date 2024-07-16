@@ -2,6 +2,7 @@ package ram0973.web.config;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -37,6 +38,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(o -> o
                 .requestMatchers("/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 //.requestMatchers("/api/v1/persons/**").authenticated()
                 //.requestMatchers("/api/v1/articles/**").authenticated()
                 //.anyRequest().rememberMe()
@@ -51,8 +53,8 @@ public class SecurityConfig {
 //                .rememberMeCookieDomain("localhost")
 //            )
             .csrf(o -> o.disable())
-            //.cors(Customizer.withDefaults()) // o -> o.disable())
-            .cors(o -> o.disable())
+            .cors(Customizer.withDefaults()) // o -> o.disable())
+            //.cors(o -> o.disable())
             .httpBasic(o -> o.disable())
             .formLogin(o -> o.disable())
             //.logout(o -> o.deleteCookies("JSESSIONID").permitAll())

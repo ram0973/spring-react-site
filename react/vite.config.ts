@@ -6,16 +6,19 @@ import mkcert from'vite-plugin-mkcert'
 export default defineConfig({
   plugins: [
     react(),
-    mkcert(),
+    //mkcert(),
   ],
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8080/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    },
-    https: true
+    https: false,
   }
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://localhost:8080/api',
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/api/, '')
+  //     }
+  //   },
+  //   https: true
+  // }
 })

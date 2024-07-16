@@ -12,7 +12,7 @@ export const useAxiosInterceptor = function () {
       function (response) {
         return response;
       }, function (error) {
-        if (authContext.person && error.response.status === 401) {
+        if (authContext.person && error.response.status == 401) {
           authContext.person = null;
           setItemToLocalStorage("webapp.auth", null);
           router.navigate("/login").then();
