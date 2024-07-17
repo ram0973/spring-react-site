@@ -48,7 +48,7 @@ export const PersonTablePage: React.FC = () => {
         <Table variant='striped'>
           <Thead><Tr><Th>Id</Th><Th>Email</Th><Th>Enabled</Th><Th>Created</Th><Th>Actions</Th></Tr></Thead>
           <Tbody>
-            { query.isPending ? <Spinner/> :
+            { query.isPending ? <Tr><Td><Spinner/></Td></Tr> :
               query.isError ? <Tr><Td>Error: {(query.error as AxiosError).message}</Td></Tr> :
               query.data.persons.map((person: Person) => <PersonTableRow person={person} key={person.id} />)
             }

@@ -28,8 +28,13 @@ interface MultiPartFileUtils {
 
         Path pathWithDate = Files.createDirectories(Path.of(root.toString(), year, month, day));
         Path newFilePath = Files.createTempFile(pathWithDate, "", "." + originalFileExtension);
-
         image.transferTo(newFilePath);
-        return newFilePath.toString();
+
+        // for Windows OS
+        String imagePath = newFilePath.toString().replace("\\", "/");
+        if (imagePath.contains("/upload")) {
+            imagePath = imagePath.substring(imagePath.indexOf("/upload"));
+        }
+        return imagePath;
     }
 }

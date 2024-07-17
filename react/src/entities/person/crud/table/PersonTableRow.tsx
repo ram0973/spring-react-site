@@ -40,7 +40,7 @@ export const PersonTableRow: React.FC<PersonTableRowProps> = ({person}) => {
         <HStack>
 
           <Link to={`/admin/persons/update/${person.id}`}><EditIcon style={{cursor: 'pointer'}}/></Link>
-          <DeleteIcon onClick={deleteModalDisclosure.onOpen} style={{cursor: 'pointer'}} colorSchema={"twitter"}/>
+          <DeleteIcon onClick={deleteModalDisclosure.onOpen} style={{cursor: 'pointer'}} />
           <PersonDeleteModal isOpen={deleteModalDisclosure.isOpen}
                              onClose={deleteModalDisclosure.onClose}
                              email={person.email} dataKey={person.id}

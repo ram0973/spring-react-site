@@ -1,13 +1,11 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
+import {ArticleCreateFormData} from "./zod.ts";
 
-const createArticleApi = async (article) => {
-
-  //const formData= new FormData();
+const createArticleApi = async (article: ArticleCreateFormData) => {
   const image: File = article.image[0]
   article = {...article, image}
-  return (await axiosInstance.post("/api/v1/articles",
-    article,
+  return (await axiosInstance.post("/api/v1/articles", article,
     {
       headers: {
         "Content-type": "multipart/form-data",

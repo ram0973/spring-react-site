@@ -13,6 +13,7 @@ import {PersonViewPage} from "./entities/person/crud/view/PersonViewPage.tsx";
 import {ArticleTablePage} from "./entities/article/crud/table/ArticleTablePage.tsx";
 import {ArticleCreatePage} from "./entities/article/crud/create/ArticleCreatePage.tsx";
 import {ArticleViewPage} from "./entities/article/crud/view/ArticleViewPage.tsx";
+import {ArticleUpdatePage} from "./entities/article/crud/update/ArticleUpdatePage.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignupPage/>
+      },
+      {
+        path: "articles/view/:id",
+        element: <ArticleViewPage/>
       },
     ],
   },
@@ -63,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: "articles/view/:id",
         element: <ArticleViewPage/>
+      },
+      {
+        path: "articles/update/:id",
+        element: <ArticleUpdatePage/>
       },
     ],
   },

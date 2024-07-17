@@ -10,15 +10,12 @@ export default defineConfig({
   ],
   server: {
     https: false,
+    proxy: {
+      '/upload': {
+       target: 'http://localhost:8080',
+       changeOrigin: true,
+       // rewrite: (path) => path.replace(/^\/static/, '')
+      }
+   },
   }
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:8080/api',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/api/, '')
-  //     }
-  //   },
-  //   https: true
-  // }
 })

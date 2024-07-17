@@ -17,14 +17,13 @@ import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 
 import React from "react";
-import {ArticleCreateRequestDto} from "../../model/ArticleCreateRequestDto.ts";
 import {ArticleCreateFormData, articleCreateFormSchema} from "./zod.ts";
 
 interface ArticleCreateFormProps {
   isError: boolean;
   isLoading: boolean;
   errorMessage?: string;
-  onFormSubmit: (article: ArticleCreateRequestDto) => void;
+  onFormSubmit: (article: ArticleCreateFormData) => void;
 }
 
 export const ArticleCreateForm: React.FC<ArticleCreateFormProps> =
