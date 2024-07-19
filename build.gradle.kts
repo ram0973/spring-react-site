@@ -1,7 +1,10 @@
+import com.github.gradle.node.npm.task.NpmTask
+
 plugins {
     java
     id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.1.5"
+    id("com.github.node-gradle.node") version "7.0.2"
 }
 
 group = "ram0973"
@@ -19,6 +22,28 @@ configurations {
     }
 }
 
+node {
+    download.set(false)
+    //workDir.set(file("${project.projectDir}/.cache/nodejs"))
+    //npmWorkDir.set(file("${project.projectDir}/.cache/npm"))
+    nodeProjectDir.set(file("${project.projectDir}/react"))
+}
+
+val buildWebApp = tasks.register<NpmTask>("buildWebapp") {
+    args.set(listOf("" +
+            "run", "build"))
+    dependsOn(tasks.npmInstall)
+    inputs.dir(project.fileTree("react"))
+    inputs.dir("react/node_modules")
+    inputs.files("react/package.json", "react/package-lock.json", "react/tsconfig.json", "react/tsconfig.node.json")
+    outputs.dir("../build/resources/main/static")
+}
+
+val copyWebApp = tasks.register<Copy>("copyWebApp") {
+    from("react/dist/.")
+    into("build/resources/main/static")
+}
+
 repositories {
     mavenCentral()
 }
@@ -30,6 +55,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.session:spring-session-core")
     implementation("org.springframework.session:spring-session-data-redis")
+
+    implementation("org.apache.commons:commons-lang3:3.15.0")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
@@ -48,3 +75,4 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+

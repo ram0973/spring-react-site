@@ -38,14 +38,18 @@ public class Person extends BaseModel implements Serializable {
     @Column(name = "account_enabled")
     private boolean enabled = true;
 
-    @Column(name = "credentials_expired")
+    @Column(name = "credentials_non_expired")
     private boolean credentialsNonExpired = true;
 
-    @Column(name = "account_expired")
+    @Column(name = "account_non_expired")
     private boolean accountNonExpired = true;
 
-    @Column(name = "account_locked")
+    @Column(name = "account_non_locked")
     private boolean nonLocked = true;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "person")
+    private Set<PersistentToken> persistentTokens = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "person_role", joinColumns = @JoinColumn(name = "id"),
@@ -55,7 +59,7 @@ public class Person extends BaseModel implements Serializable {
     private final Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "author")
-    @JsonIgnore //needed to avoid infinite recursion
+    @JsonIgnore // needed to avoid infinite recursion
     private List<Article> articles;
 
     public void addRole(Role role) {

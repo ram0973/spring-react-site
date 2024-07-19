@@ -1,10 +1,11 @@
-import {Avatar, HStack, Switch, Td, Text, Tr, useDisclosure} from "@chakra-ui/react";
+import {HStack, Switch, Td, Text, Tr, useDisclosure} from "@chakra-ui/react";
 import {DeleteIcon, EditIcon, ViewIcon} from "@chakra-ui/icons";
 import {useToast} from "@chakra-ui/toast";
 import React from "react";
 import {Link} from "react-router-dom";
 import {ArticleDeleteModal} from "./ArticleDeleteModal.tsx";
 import {useDeleteArticle} from "../delete/useDeleteArticle.ts";
+import {Article} from "../../model/Article.ts";
 
 
 type ArticleTableRowProps = {

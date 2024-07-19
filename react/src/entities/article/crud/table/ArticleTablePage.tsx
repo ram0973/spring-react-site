@@ -19,6 +19,7 @@ import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {AxiosError} from "axios";
 import {ArticleTableRow} from "./ArticleTableRow.tsx";
+import {Article} from "../../model/Article.ts";
 
 
 export const ArticleTablePage: React.FC = () => {

@@ -3,9 +3,9 @@ import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
 import {ArticleCreateFormData} from "./zod.ts";
 
 const createArticleApi = async (article: ArticleCreateFormData) => {
-  const image: File = article.image[0]
-  article = {...article, image}
-  return (await axiosInstance.post("/api/v1/articles", article,
+  const image = article.image ? [0] : null
+  const articleWithFile = {...article, image}
+  return (await axiosInstance.post("/api/v1/articles", articleWithFile,
     {
       headers: {
         "Content-type": "multipart/form-data",

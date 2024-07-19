@@ -20,9 +20,13 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+
+import static org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive.COOKIES;
 
 @EnableWebSecurity
 @Configuration
@@ -38,10 +42,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(o -> o
                 .requestMatchers("/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 //.requestMatchers("/api/v1/persons/**").authenticated()
                 //.requestMatchers("/api/v1/articles/**").authenticated()
-                //.anyRequest().rememberMe()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .anyRequest().permitAll()
             )
 //            .rememberMe(o -> o
@@ -58,7 +61,8 @@ public class SecurityConfig {
             .httpBasic(o -> o.disable())
             .formLogin(o -> o.disable())
             //.logout(o -> o.deleteCookies("JSESSIONID").permitAll())
-            .exceptionHandling(o -> o.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
+            .logout(o -> o.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))))
+            .exceptionHandling(o -> o.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
         ;
         return http.build();
     }

@@ -8,13 +8,8 @@ export const personCreateFormSchema = z
     enabled: z.boolean()
   })
   .refine(
-    (values) => {
-      return values.password === values.confirmPassword;
-    },
-    {
-      message: "Passwords mismatch",
-      path: ["confirmPassword"]
-    }
+    values => values.password === values.confirmPassword,
+    {message: "Passwords mismatch", path: ["confirmPassword"]},
   );
 
 export type PersonCreateFormData = z.infer<typeof personCreateFormSchema>;

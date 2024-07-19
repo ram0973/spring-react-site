@@ -7,11 +7,14 @@ export const articleCreateFormSchema = z
   .object({
     title: z.string().max(255, "Title must not exceed 255 symbols"),
     slug: z.string(),
-    image: typeof window === 'undefined' ? z.any() : z.instanceof(FileList)
-      .refine((image) => image?.length === 0 || (image[0]?.size < MAX_IMAGE_SIZE), `Max file size is 3MB`)
+    image: typeof window === 'undefined' ? z.null() : z.instanceof(FileList)
       .refine(
-        (image) => image?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(image?.[0]?.type),
-        ".jpg, .jpeg, .png, .webp, .avif files are accepted only"
+        image => (image?.length === 0) || (image[0]?.size < MAX_IMAGE_SIZE),
+        "Max file size is 3MB",
+      )
+      .refine(
+        image => image?.length === 0 || ACCEPTED_IMAGE_TYPES.includes(image?.[0]?.type),
+        ".jpg, .jpeg, .png, .webp, .avif files are accepted only",
       ),
     excerpt: z.string(),
     content: z.string(),

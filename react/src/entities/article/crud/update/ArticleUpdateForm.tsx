@@ -17,6 +17,7 @@ import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import React, {useEffect} from "react";
 import {ArticleUpdateFormData, articleUpdateFormSchema} from "./zod.ts";
+import {Article} from "../../model/Article.ts";
 
 interface ArticleUpdateFormProps {
   article: Article | undefined,
@@ -43,9 +44,7 @@ export const ArticleUpdateForm: React.FC<ArticleUpdateFormProps> =
     useEffect(() => {
       if (article) {
         const defaultValues = {
-          id: article.id,
-          title: article.title,
-          enabled: article.enabled,
+          ...article
         };
         reset(defaultValues);
       }

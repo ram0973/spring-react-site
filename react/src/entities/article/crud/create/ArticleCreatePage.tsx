@@ -3,15 +3,15 @@ import {useCreateArticle} from "./useCreateArticle.ts";
 import {useNavigate} from "react-router-dom";
 
 import {AxiosError} from "axios";
-import {ArticleCreateRequestDto} from "../../model/ArticleCreateRequestDto.ts";
 import {AxiosErrorResponseDto} from "../../../../services/axios/AxiosErrorResponseDto.ts";
+import {ArticleCreateFormData} from "./zod.ts";
 
 export const ArticleCreatePage = () => {
   const createMutation = useCreateArticle()
   const errorData = (createMutation.error as AxiosError)?.response?.data as AxiosErrorResponseDto
   const navigate = useNavigate();
 
-  const onSubmitHandler = async (article: ArticleCreateRequestDto) => {
+  const onSubmitHandler = async (article: ArticleCreateFormData) => {
     createMutation.mutate(article);
     const id = createMutation.data.id;
     navigate(`/articles/view/${id}`);

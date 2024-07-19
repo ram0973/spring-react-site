@@ -12,7 +12,7 @@ export const PersonUpdatePage = () => {
   const updateMutation = useUpdatePerson()
   const navigate = useNavigate();
   const {id} = useParams();
-  const query = useGetPerson(parseInt(id));
+  const query = useGetPerson(id);
   const errorData = (query.error as AxiosError)?.response?.data as AxiosErrorResponseDto
 
   const onSubmitHandler: SubmitHandler<PersonUpdateFormData> = (data) => {

@@ -62,7 +62,7 @@ export const ArticleCreateForm: React.FC<ArticleCreateFormProps> =
               </FormControl>
               <FormControl isInvalid={!!form.formState.errors.image}>
                 <FormLabel>Image</FormLabel>
-                <Input id="image" type={"file"} placeholder="Image" {...form.register('image')}/>
+                <Input id="picture" type="file" placeholder="Choose a article image"  {...form.register('image')}/>
                 <FormErrorMessage>{form.formState.errors.image?.message}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!form.formState.errors.excerpt}>

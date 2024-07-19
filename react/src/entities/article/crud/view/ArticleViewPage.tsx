@@ -1,7 +1,7 @@
 import React from 'react';
 import {useGetArticle} from "./useGetArticle.ts";
 import {useParams} from "react-router-dom";
-import {Box, Center, Flex, Heading, Image, Spinner, Text} from "@chakra-ui/react";
+import {Box, Flex, Heading, Image, Spinner, Text} from "@chakra-ui/react";
 
 export const ArticleViewPage: React.FC = () => {
   const {id} = useParams();

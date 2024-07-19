@@ -26,7 +26,7 @@ interface PersonUpdateFormProps {
   isError: boolean;
   isLoading: boolean;
   errorMessage?: string;
-  onFormSubmit: (person: Person) => void;
+  onFormSubmit: (person: PersonUpdateFormData) => void;
 }
 
 export const PersonUpdateForm: React.FC<PersonUpdateFormProps> =

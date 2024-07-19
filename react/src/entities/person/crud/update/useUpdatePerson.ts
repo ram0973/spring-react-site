@@ -1,8 +1,8 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {Person} from "../../model/Person.ts";
 import {axiosInstance} from "../../../../services/axios/axiosInstance.ts";
+import {PersonUpdateFormData} from "./zod.ts";
 
-const updatePersonApi = async (person: Person) => {
+const updatePersonApi = async (person: PersonUpdateFormData) => {
   return await axiosInstance.put(`/api/v1/persons/${person.id}`, person);
 }
 

@@ -18,13 +18,12 @@ import {zodResolver} from "@hookform/resolvers/zod";
 
 import React from "react";
 import {PersonCreateFormData, personCreateFormSchema} from "./zod.ts";
-import {Person} from "../../model/Person.ts";
 
 interface UserCreateFormProps {
   isError: boolean;
   isLoading: boolean;
   errorMessage?: string;
-  onFormSubmit: (person: Person) => void;
+  onFormSubmit: (person: PersonCreateFormData) => void;
 }
 
 export const PersonCreateForm: React.FC<UserCreateFormProps> =

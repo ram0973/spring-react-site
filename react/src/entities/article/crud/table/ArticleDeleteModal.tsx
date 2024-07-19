@@ -13,7 +13,7 @@ import {
 type ArticleDeleteModalProps = {
   isOpen: boolean,
   onClose: () => void,
-  email: string,
+  title: string,
   dataKey: number,
   onClick: () => Promise<void>
 }

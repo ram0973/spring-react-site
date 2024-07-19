@@ -5,10 +5,7 @@ import {Box} from "@chakra-ui/react";
 
 export const PersonViewPage: React.FC = () => {
   const {id} = useParams();
-  if (!id) {
-    throw("Error");
-  }
-  const query = useGetPerson(Number(id));
+  const query = useGetPerson(id);
 
   if (query.isPending) {
     return ("Loading...")
