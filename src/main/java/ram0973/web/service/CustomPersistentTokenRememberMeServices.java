@@ -2,6 +2,8 @@ package ram0973.web.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
@@ -142,7 +144,7 @@ public class CustomPersistentTokenRememberMeServices extends AbstractRememberMeS
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         String rememberMeCookie = extractRememberMeCookie(request);
-        if (rememberMeCookie != null && rememberMeCookie.length() != 0) {
+        if (rememberMeCookie != null && !rememberMeCookie.isEmpty()) {
             try {
                 String[] cookieTokens = decodeCookie(rememberMeCookie);
                 PersistentToken token = getPersistentToken(cookieTokens);
@@ -168,7 +170,7 @@ public class CustomPersistentTokenRememberMeServices extends AbstractRememberMeS
         String presentedSeries = cookieTokens[0];
         String presentedToken = cookieTokens[1];
         Optional<PersistentToken> optionalToken = customPersistentTokenRepository.findById(presentedSeries);
-        if (!optionalToken.isPresent()) {
+        if (optionalToken.isEmpty()) {
             // No series match, so we can't authenticate using this cookie
             throw new RememberMeAuthenticationException("No persistent token found for series id: " + presentedSeries);
         }
@@ -193,6 +195,7 @@ public class CustomPersistentTokenRememberMeServices extends AbstractRememberMeS
 
     private static class UpgradedRememberMeToken implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         private final String[] upgradedToken;

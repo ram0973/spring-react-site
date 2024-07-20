@@ -1,2 +1,2 @@
 rootProject.name = "web"
-include("react")
+include("src/main/react")
