@@ -8,11 +8,10 @@ import {router} from "../../router.tsx";
 export const useAxiosInterceptor = function () {
   const authContext = useAuthContext();
   const checkAuth = () => {
-    fetch('/api/v1/auth/me', {
-      method: 'POST'
-    })
-      .then(res => res.json())
+    axiosInstance.post('/api/v1/auth/me')
+      .then(res => res.data())
       .then(res => {
+        console.log(res);
         if (res) {
           authContext.person = null;
           setItemToLocalStorage("webapp.auth", {});

@@ -26,21 +26,21 @@ node {
     download.set(false)
     //workDir.set(file("${project.projectDir}/.cache/nodejs"))
     //npmWorkDir.set(file("${project.projectDir}/.cache/npm"))
-    nodeProjectDir.set(file("${project.projectDir}/react"))
+    nodeProjectDir.set(file("${project.projectDir}/src/main/react"))
 }
 
 val buildWebApp = tasks.register<NpmTask>("buildWebapp") {
     args.set(listOf("" +
             "run", "build"))
     dependsOn(tasks.npmInstall)
-    inputs.dir(project.fileTree("react"))
-    inputs.dir("react/node_modules")
-    inputs.files("react/package.json", "react/package-lock.json", "react/tsconfig.json", "react/tsconfig.node.json")
-    outputs.dir("../build/resources/main/static")
+    inputs.dir("src/main/react")
+    inputs.dir("src/main/react/node_modules")
+    inputs.files("src/main/react/package.json", "src/main/react/package-lock.json", "src/main/react/tsconfig.json", "src/main/react/tsconfig.node.json")
+    //outputs.dir("build/resources/main/static")
 }
 
 val copyWebApp = tasks.register<Copy>("copyWebApp") {
-    from("react/dist/.")
+    from("src/main/react/dist/.")
     into("build/resources/main/static")
 }
 

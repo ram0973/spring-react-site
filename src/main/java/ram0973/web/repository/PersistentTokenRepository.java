@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the {@link PersistentToken} entity.
  */
-public interface CustomPersistentTokenRepository extends JpaRepository<PersistentToken, String> {
-    List<PersistentToken> findByPerson(Person person);
-    List<PersistentToken> findByTokenDateBefore(LocalDate localDate);
-}
+//public interface PersistentTokenRepository extends JpaRepository<PersistentToken, String>{
+//    List<PersistentToken> findByPerson(Person person);
+//    List<PersistentToken> findByTokenDateBefore(LocalDate localDate);
+//}

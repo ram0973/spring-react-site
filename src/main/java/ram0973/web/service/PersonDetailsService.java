@@ -10,7 +10,7 @@ import ram0973.web.repository.PersonRepository;
 
 @Service(value = "detailService")
 @RequiredArgsConstructor
-public class DetailService implements UserDetailsService {
+public class PersonDetailsService implements UserDetailsService {
 
     private final PersonRepository personRepository;
 

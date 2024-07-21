@@ -1,4 +1,4 @@
-package ram0973.web.service;
+package ram0973.web.utils;
 
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-interface MultiPartFileUtils {
+public interface MultiPartFileUtils {
 
     static Path getResourceAsFile(String relativeFilePath) throws FileNotFoundException {
         return ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + relativeFilePath).toPath();

@@ -51,7 +51,7 @@ public class AuthController {
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Principal is null", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/csrf")

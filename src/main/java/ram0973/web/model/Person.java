@@ -47,9 +47,9 @@ public class Person extends BaseModel implements Serializable {
     @Column(name = "account_non_locked")
     private boolean nonLocked = true;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "person")
-    private Set<PersistentToken> persistentTokens = new HashSet<>();
+    //@JsonIgnore
+    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "person")
+    //private Set<PersistentToken> persistentTokens = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "person_role", joinColumns = @JoinColumn(name = "id"),

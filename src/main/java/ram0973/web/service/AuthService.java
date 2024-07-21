@@ -36,6 +36,7 @@ public class AuthService {
 
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
     private final PersonService personService;
+    //private final PersistentTokenRememberMeServices rememberMeServices;
 
     @Value("${custom.admin.email}")
     private String adminEmail;
@@ -79,6 +80,9 @@ public class AuthService {
 
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
+
+
+
         return authentication;
     }
 

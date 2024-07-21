@@ -1,4 +1,4 @@
-package ram0973.web.service;
+package ram0973.web.utils;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 
-interface PagedEntityUtils {
+public interface PagedEntityUtils {
     static Sort.Direction getSortDirection(@NotNull String direction) {
         if (direction.equals("asc")) {
             return Sort.Direction.ASC;

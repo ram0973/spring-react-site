@@ -1,4 +1,4 @@
-import z from "react/src/auth/login/zod";
+import z from "zod";
 
 export const loginFormSchema = z
   .object({
