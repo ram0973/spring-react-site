@@ -27,7 +27,10 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+import ram0973.web.filters.CsrfCookieFilter;
 import ram0973.web.filters.SpaWebFilter;
 
 import ram0973.web.service.PersonDetailsService;
@@ -52,6 +55,12 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
+        //CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new SpaCsrfTokenRequestHandler();
+        // set the name of the attribute the CsrfToken will be populated on
+        //spaCsrfTokenRequestHandler.setCsrfRequestAttributeName(null);
+        CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new CsrfTokenRequestAttributeHandler();
+        // set the name of the attribute the CsrfToken will be populated on
+        spaCsrfTokenRequestHandler.setCsrfRequestAttributeName(null);
         http
             .anonymous(AbstractHttpConfigurer::disable)
             //.addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
@@ -83,6 +92,12 @@ public class SecurityConfig {
 //                .key(rememberMeKey)
 //            )
             .csrf(o -> o.disable())
+
+//            .csrf((csrf) -> csrf
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .csrfTokenRequestHandler(spaCsrfTokenRequestHandler)
+//            )
+            .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .cors(Customizer.withDefaults()) // o -> o.disable())
             //.cors(o -> o.disable())
             .httpBasic(o -> o.disable())

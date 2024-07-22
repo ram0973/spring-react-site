@@ -12,6 +12,7 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import ram0973.web.dto.auth.LoginRequestDto;
 import ram0973.web.dto.auth.RegisterRequestDto;
+import ram0973.web.model.CsrfResponse;
 import ram0973.web.model.Person;
 import ram0973.web.service.AuthService;
 
@@ -33,7 +34,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = authService.login(dto, request, response);
-        //rememberMeServices.loginSuccess(request, response, auth);
         log.info("Person with email: {} has successfully login", dto.email());
         return new ResponseEntity<>("Successfully authenticated", HttpStatus.OK);
     }
@@ -51,7 +51,7 @@ public class AuthController {
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @GetMapping("/csrf")
@@ -59,6 +59,4 @@ public class AuthController {
         var csrf = (CsrfToken) request.getAttribute("_csrf");
         return new CsrfResponse(csrf.getToken());
     }
-
-    public record CsrfResponse(String token) {}
 }

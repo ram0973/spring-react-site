@@ -20,7 +20,7 @@ export const useAxiosInterceptor = function () {
       });
   }
   React.useEffect(() => {
-    checkAuth();
+    //checkAuth();
     const authInterceptor = axiosInstance.interceptors.response.use(
       function (response) {
         return response;

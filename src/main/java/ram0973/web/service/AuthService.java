@@ -81,7 +81,7 @@ public class AuthService {
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
 
-
+        //rememberMeServices.loginSuccess(request, response, auth);
 
         return authentication;
     }
