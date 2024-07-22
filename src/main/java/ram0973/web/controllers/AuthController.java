@@ -22,6 +22,8 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Log4j2
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = "http://localhost:5173",
+    exposedHeaders = {"Access-Control-Allow-Origin","Access-Control-Allow-Credentials"})
 public class AuthController {
     private final AuthService authService;
 

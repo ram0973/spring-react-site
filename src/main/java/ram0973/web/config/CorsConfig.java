@@ -18,23 +18,30 @@ public class CorsConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5173/")); // React
+//        configuration.setAllowedOrigins(
+//            List.of("http://localhost:5173", "http://localhost:5173/", "http://localhost")
+//        ); // React
 
-        configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"));
+
+        configuration.applyPermitDefaultValues();
+//        configuration.setAllowedHeaders(List.of(
+//            "Origin", //OPTIONS
+//            "Access-Control-Allow-Headers",
+//            "Access-Control-Allow-Origin",
+//            "Access-Control-Request-Method", //OPTIONS
+//            "Access-Control-Request-Headers", //OPTIONS optionally
+//            "Cache-Control",
+//            "Content-Type",
+//            "Authorization",
+//            "X-Requested-With",
+//            "Accept"
+//        ));
         configuration.setAllowCredentials(true);
-        //configuration.applyPermitDefaultValues();
-        configuration.setAllowedHeaders(List.of(
-            "Access-Control-Allow-Headers",
-            "Access-Control-Allow-Origin",
-            "Access-Control-Request-Method", //OPTIONS
-            "Access-Control-Request-Headers", //OPTIONS optionally
-            "Origin", //OPTIONS
-            "Cache-Control",
-            "Content-Type",
-            "Authorization",
-            "X-Requested-With",
-            "Accept"
-        ));
+        configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin("http://127.0.0.1:5173");
+        configuration.addAllowedOrigin("http://127.0.0.1:8080");
+        configuration.addAllowedOrigin("http://localhost:8080");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

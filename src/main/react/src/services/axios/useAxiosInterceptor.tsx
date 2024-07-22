@@ -7,18 +7,18 @@ import {router} from "../../router.tsx";
 // hook for intercepting api requests
 export const useAxiosInterceptor = function () {
   const authContext = useAuthContext();
-  const checkAuth = () => {
-    axiosInstance.post('/api/v1/auth/me')
-      .then(res => res.data())
-      .then(res => {
-        console.log(res);
-        if (res) {
-          authContext.person = null;
-          setItemToLocalStorage("webapp.auth", {});
-          router.navigate("/login").then();
-        }
-      });
-  }
+  // const checkAuth = () => {
+  //   axiosInstance.post('/api/v1/auth/me')
+  //     .then(res => res.data())
+  //     .then(res => {
+  //       console.log(res);
+  //       if (res) {
+  //         authContext.person = null;
+  //         setItemToLocalStorage("webapp.auth", {});
+  //         router.navigate("/login").then();
+  //       }
+  //     });
+  // }
   React.useEffect(() => {
     //checkAuth();
     const authInterceptor = axiosInstance.interceptors.response.use(

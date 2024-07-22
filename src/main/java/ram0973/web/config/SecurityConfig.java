@@ -55,12 +55,10 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
-        //CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new SpaCsrfTokenRequestHandler();
+        CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new SpaCsrfTokenRequestHandler();
         // set the name of the attribute the CsrfToken will be populated on
         //spaCsrfTokenRequestHandler.setCsrfRequestAttributeName(null);
-        CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new CsrfTokenRequestAttributeHandler();
-        // set the name of the attribute the CsrfToken will be populated on
-        spaCsrfTokenRequestHandler.setCsrfRequestAttributeName(null);
+
         http
             .anonymous(AbstractHttpConfigurer::disable)
             //.addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
@@ -91,12 +89,12 @@ public class SecurityConfig {
 //                //.useSecureCookie(true)
 //                .key(rememberMeKey)
 //            )
-            .csrf(o -> o.disable())
+            //.csrf(o -> o.disable())
 
-//            .csrf((csrf) -> csrf
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .csrfTokenRequestHandler(spaCsrfTokenRequestHandler)
-//            )
+            .csrf((csrf) -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRequestHandler(spaCsrfTokenRequestHandler)
+            )
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .cors(Customizer.withDefaults()) // o -> o.disable())
             //.cors(o -> o.disable())
