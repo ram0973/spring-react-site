@@ -22,8 +22,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Log4j2
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "http://localhost:5173",
-    exposedHeaders = {"Access-Control-Allow-Origin","Access-Control-Allow-Credentials"})
+@CrossOrigin(origins = "*")
 public class AuthController {
     private final AuthService authService;
 
@@ -48,7 +47,7 @@ public class AuthController {
         return new ResponseEntity<>("Logged out", HttpStatus.OK);
     }
 
-    @PostMapping("/me")
+    @GetMapping("/me")
     public ResponseEntity<String> profile(Principal principal) {
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
@@ -56,6 +55,7 @@ public class AuthController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    // Not using this now
     @GetMapping("/csrf")
     public CsrfResponse csrf(HttpServletRequest request) {
         var csrf = (CsrfToken) request.getAttribute("_csrf");

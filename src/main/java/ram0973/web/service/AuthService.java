@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import ram0973.web.dto.auth.LoginRequestDto;
@@ -33,6 +34,7 @@ public class AuthService {
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private final PasswordEncoder passwordEncoder;
     private final PersonRepository personRepository;
+    private final TokenBasedRememberMeServices tokenBasedRememberMeServices;
 
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
     private final PersonService personService;
@@ -81,7 +83,7 @@ public class AuthService {
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
 
-        //rememberMeServices.loginSuccess(request, response, auth);
+        tokenBasedRememberMeServices.loginSuccess(request, response, authentication);
 
         return authentication;
     }

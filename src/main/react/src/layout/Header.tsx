@@ -15,12 +15,12 @@ const Header = () => {
         </Box>
         <Spacer/>
         <ButtonGroup gap='2'>
-          {context?.person?.email &&
+          {context?.person &&
             <Link to={"/admin/persons"}><Button colorScheme='twitter'>Admin</Button></Link>
           }
-          {!context?.person?.email && <Link to={"/signup"}><Button colorScheme='twitter'>Sign Up</Button></Link>}
+          {!context?.person && <Link to={"/signup"}><Button colorScheme='twitter'>Sign Up</Button></Link>}
           {
-            context?.person?.email ? <LogoutButton/> :
+            context?.person ? <LogoutButton/> :
               <Link to={"/login"}>
                 <Button colorScheme="twitter">Login</Button>
               </Link>

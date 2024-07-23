@@ -50,7 +50,8 @@ public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-        MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, WebRequest request) {
+        MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status,
+        @NonNull WebRequest request) {
         List<FieldViolation> fieldViolations = ex.getBindingResult()
             .getFieldErrors()
             .stream()
