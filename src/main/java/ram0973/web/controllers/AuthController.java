@@ -8,11 +8,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import ram0973.web.dto.auth.LoginRequestDto;
 import ram0973.web.dto.auth.RegisterRequestDto;
-import ram0973.web.model.CsrfResponse;
 import ram0973.web.model.Person;
 import ram0973.web.service.AuthService;
 
@@ -48,17 +46,10 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<String> profile(Principal principal) {
+    public ResponseEntity<String> me(Principal principal) {
         if (principal != null) {
             return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.OK);
-    }
-
-    // Not using this now
-    @GetMapping("/csrf")
-    public CsrfResponse csrf(HttpServletRequest request) {
-        var csrf = (CsrfToken) request.getAttribute("_csrf");
-        return new CsrfResponse(csrf.getToken());
     }
 }

@@ -38,7 +38,6 @@ public class AuthService {
 
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
     private final PersonService personService;
-    //private final PersistentTokenRememberMeServices rememberMeServices;
 
     @Value("${custom.admin.email}")
     private String adminEmail;
@@ -60,15 +59,6 @@ public class AuthService {
         return person;
     }
 
-    /**
-     * After an employee is authenticated via the auth manager, I am manually storing the authentication
-     * For a better understanding, click the link below
-     * <a href="https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html">...</a>
-     *
-     * @param dto      is a record. It accepts email and password
-     * @param request  of type HttpServletRequest
-     * @param response of type HttpServletResponse
-     **/
     public Authentication login(LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
             dto.email().trim(), dto.password());
@@ -76,15 +66,11 @@ public class AuthService {
         if (!authentication.isAuthenticated()) {
             throw new BadCredentialsException("Invalid username or password");
         }
-
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
-
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
-
         tokenBasedRememberMeServices.loginSuccess(request, response, authentication);
-
         return authentication;
     }
 
@@ -94,5 +80,6 @@ public class AuthService {
         this.logoutHandler.setSecurityContextHolderStrategy(securityContextHolderStrategy);
         this.logoutHandler.setSecurityContextRepository(securityContextRepository);
         this.logoutHandler.logout(request, response, authentication);
+        tokenBasedRememberMeServices.logout(request, response, authentication);
     }
 }

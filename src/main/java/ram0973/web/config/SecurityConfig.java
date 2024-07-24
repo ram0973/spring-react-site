@@ -40,6 +40,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+//import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -59,54 +60,9 @@ import static org.springframework.security.web.header.writers.ClearSiteDataHeade
 @RequiredArgsConstructor
 @Log4j2
 public class SecurityConfig {
-    final PersonDetailsService personDetailsService;
-    final PersonRepository personRepository;
-    @Value("${custom.security.remember-me.key}")
-    private String rememberMeKey;
-
-    @Bean
-    TokenBasedRememberMeServices rememberMeServices() {
-        TokenBasedRememberMeServices tokenBasedRememberMeServices = new TokenBasedRememberMeServices(
-            rememberMeKey, new PersonDetailsService(personRepository));
-        tokenBasedRememberMeServices.setAlwaysRemember(true);
-        tokenBasedRememberMeServices.setTokenValiditySeconds(3600 * 24 * 365);
-
-        return tokenBasedRememberMeServices;
-    }
-
-    @Bean
-    RememberMeAuthenticationProvider rememberMeAuthenticationProvider() {
-        return new RememberMeAuthenticationProvider(rememberMeKey);
-    }
-
-    @Bean
-    public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter()
-        throws Exception {
-        UsernamePasswordAuthenticationFilter filter =
-            new UsernamePasswordAuthenticationFilter();
-        filter.setRememberMeServices(rememberMeServices());
-        filter.setAuthenticationManager(authenticationManager(new PersonDetailsService(personRepository), passwordEncoder()));
-        return filter;
-    }
-
-//    @Bean
-//    public DataSource dataSource()
-//    {
-//        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-//        dataSourceBuilder.driverClassName("org.postgresql.Driver");
-//        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/web");
-//        dataSourceBuilder.username("web");
-//        dataSourceBuilder.password("web");
-//        return dataSourceBuilder.build();
-//    }
-
-    //final PersistentTokenRepository persistentTokenRepository;
-
-    @Bean
-    RememberMeAuthenticationFilter rememberMeFilter() {
-        return new RememberMeAuthenticationFilter(
-            authenticationManager(new PersonDetailsService(personRepository), passwordEncoder()), rememberMeServices());
-    }
+    //final PersonDetailsService personDetailsService;
+    //final PersonRepository personRepository;
+    final RememberMeServices rememberMeServices;
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -115,9 +71,7 @@ public class SecurityConfig {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
-        RememberMeAuthenticationProvider rememberMeAuthenticationProvider =
-            new RememberMeAuthenticationProvider(rememberMeKey);
-        return new ProviderManager(authenticationProvider, rememberMeAuthenticationProvider);
+        return new ProviderManager(authenticationProvider);
     }
 
     @Bean
@@ -125,12 +79,12 @@ public class SecurityConfig {
         final CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new SpaCsrfTokenRequestHandler();
         final CookieCsrfTokenRepository cookieCsrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         cookieCsrfTokenRepository.setCookieCustomizer((x) -> x.sameSite(Cookie.SameSite.STRICT.attributeValue()));
-        log.error("REMEMBERME: {}", rememberMeServices());
+        log.error("REMEMBERME: {}", rememberMeServices);
         http
             .anonymous(AbstractHttpConfigurer::disable)
             //.addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
             .sessionManagement(o -> o
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
             .authorizeHttpRequests(o -> o
                 .requestMatchers("/error").permitAll()
@@ -142,11 +96,11 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .rememberMe(o -> o
-                .key(rememberMeKey)
-                .alwaysRemember(true)
-                .tokenValiditySeconds(3600)
-                .userDetailsService(personDetailsService)
-                .rememberMeServices(rememberMeServices())
+                //.key(rememberMeKey)
+                //.alwaysRemember(true)
+                //.tokenValiditySeconds(3600)
+                //.userDetailsService(personDetailsService)
+                .rememberMeServices(rememberMeServices)
             )
 //            .rememberMe(o -> o
 //                .key(rememberMeKey)
@@ -171,35 +125,16 @@ public class SecurityConfig {
                 .csrfTokenRequestHandler(spaCsrfTokenRequestHandler)
             )
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-            //.addFilterAfter(rememberMeFilter(), BasicAuthenticationFilter.class)
-            .cors(Customizer.withDefaults()) // o -> o.disable())
-            //.cors(o -> o.disable())
-            .httpBasic(o -> o.disable())
-            .formLogin(o -> o.disable())
-            //.logout(o -> o.deleteCookies("JSESSIONID").permitAll())
-            .logout(o -> o.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))))
-            .exceptionHandling(o -> o.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+            .addFilterAfter(new SpaWebFilter(), CsrfCookieFilter.class)
+            .cors(Customizer.withDefaults())
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            //.logout(o -> o.deleteCookies("JSESSIONID"))
+            //.logout(o -> o.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))))
+            //.exceptionHandling(o -> o.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
         ;
         return http.build();
     }
-
-
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails admin = User.builder()
-//            .username("ramil@yabbarov.ru")
-//            .password("{noop}password")
-//            .roles("ADMIN")
-//            .build();
-//        UserDetails user = User.builder()
-//            .username("user@yabbarov.ru")
-//            .password("{noop}password")
-//            .roles("USER")
-//            .build();
-//
-//        return new InMemoryUserDetailsManager(admin, user);
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

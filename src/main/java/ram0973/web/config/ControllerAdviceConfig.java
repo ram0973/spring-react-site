@@ -1,6 +1,5 @@
 package ram0973.web.config;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ram0973.web.exceptions.EntityAlreadyExistsException;
 import ram0973.web.exceptions.ForbiddenOperationException;
@@ -28,25 +25,11 @@ import ram0973.web.exceptions.dto.ApiExceptionResponseDto;
 import ram0973.web.exceptions.dto.FieldViolation;
 import ram0973.web.exceptions.dto.ValidationExceptionResponseDto;
 
-import java.security.Principal;
 import java.util.List;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RestControllerAdvice
 @Slf4j
 public class ControllerAdviceConfig extends ResponseEntityExceptionHandler {
-
-// TODO: inspect this (a piece of code from docs)
-//    @ModelAttribute("currentUserName")
-//    String currentUser(Principal principal) {
-//        return (principal != null) ? principal.getName() : null;
-//    }
-//
-//    @ModelAttribute("httpSession")
-//    HttpSession httpSession(HttpSession httpSession) {
-//        return httpSession;
-//    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(

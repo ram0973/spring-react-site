@@ -31,17 +31,22 @@ node {
 
 val buildWebApp = tasks.register<NpmTask>("buildWebapp") {
     args.set(listOf("" +
-            "run", "build"))
+            "run", "build-dev"))
     dependsOn(tasks.npmInstall)
     inputs.dir("src/main/react")
     inputs.dir("src/main/react/node_modules")
-    inputs.files("src/main/react/package.json", "src/main/react/package-lock.json", "src/main/react/tsconfig.json", "src/main/react/tsconfig.node.json")
+    inputs.files("src/main/react/package.json", "src/main/react/package-lock.json",
+        "src/main/react/tsconfig.json", "src/main/react/tsconfig.node.json")
     //outputs.dir("build/resources/main/static")
 }
 
 val copyWebApp = tasks.register<Copy>("copyWebApp") {
     from("src/main/react/dist/.")
     into("build/resources/main/static")
+}
+
+tasks.withType<ProcessResources> {
+    dependsOn(buildWebApp, copyWebApp)
 }
 
 repositories {
@@ -55,8 +60,6 @@ dependencies {
     //implementation("org.springframework.boot:spring-boot-starter-data-redis")
     //implementation("org.springframework.session:spring-session-core")
     //implementation("org.springframework.session:spring-session-data-redis")
-
-    implementation("org.apache.commons:commons-lang3:3.15.0")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
