@@ -63,7 +63,7 @@ public class SecurityConfig {
     //final PersonDetailsService personDetailsService;
     //final PersonRepository personRepository;
     final RememberMeServices rememberMeServices;
-
+    final DataSource dataSource;
     @Bean
     public AuthenticationManager authenticationManager(
         UserDetailsService userDetailsService,
@@ -79,7 +79,7 @@ public class SecurityConfig {
         final CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler = new SpaCsrfTokenRequestHandler();
         final CookieCsrfTokenRepository cookieCsrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         cookieCsrfTokenRepository.setCookieCustomizer((x) -> x.sameSite(Cookie.SameSite.STRICT.attributeValue()));
-        log.error("REMEMBERME: {}", rememberMeServices);
+        log.error("DATA SOURCE {}", dataSource);
         http
             .anonymous(AbstractHttpConfigurer::disable)
             //.addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
@@ -130,7 +130,7 @@ public class SecurityConfig {
             .httpBasic(AbstractHttpConfigurer::disable)
             .formLogin(AbstractHttpConfigurer::disable)
             //.logout(o -> o.deleteCookies("JSESSIONID"))
-            //.logout(o -> o.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))))
+            .logout(o -> o.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))))
             //.exceptionHandling(o -> o.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
         ;
         return http.build();

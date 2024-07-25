@@ -13,8 +13,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import ram0973.web.dto.auth.LoginRequestDto;
@@ -31,13 +32,15 @@ import java.util.Optional;
 public class AuthService {
     private final SecurityContextRepository securityContextRepository;
     private final AuthenticationManager authManager;
-    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+    private final SecurityContextHolderStrategy securityContextHolderStrategy =
+        SecurityContextHolder.getContextHolderStrategy();
     private final PasswordEncoder passwordEncoder;
     private final PersonRepository personRepository;
-    private final TokenBasedRememberMeServices tokenBasedRememberMeServices;
+    private final RememberMeServices rememberMeServices;
 
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
     private final PersonService personService;
+    private final JdbcTokenRepositoryImpl jdbcTokenRepository;
 
     @Value("${custom.admin.email}")
     private String adminEmail;
@@ -70,7 +73,8 @@ public class AuthService {
         context.setAuthentication(authentication);
         this.securityContextHolderStrategy.setContext(context);
         this.securityContextRepository.saveContext(context, request, response);
-        tokenBasedRememberMeServices.loginSuccess(request, response, authentication);
+        rememberMeServices.loginSuccess(request, response, authentication);
+
         return authentication;
     }
 
@@ -80,6 +84,6 @@ public class AuthService {
         this.logoutHandler.setSecurityContextHolderStrategy(securityContextHolderStrategy);
         this.logoutHandler.setSecurityContextRepository(securityContextRepository);
         this.logoutHandler.logout(request, response, authentication);
-        tokenBasedRememberMeServices.logout(request, response, authentication);
+
     }
 }

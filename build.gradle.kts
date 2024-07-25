@@ -38,15 +38,14 @@ val buildWebApp = tasks.register<NpmTask>("buildWebapp") {
     inputs.files("src/main/react/package.json", "src/main/react/package-lock.json",
         "src/main/react/tsconfig.json", "src/main/react/tsconfig.node.json")
     //outputs.dir("build/resources/main/static")
-}
-
-val copyWebApp = tasks.register<Copy>("copyWebApp") {
-    from("src/main/react/dist/.")
-    into("build/resources/main/static")
+    copy {
+        from("src/main/react/dist/.")
+        into("build/resources/main/static")
+    }
 }
 
 tasks.withType<ProcessResources> {
-    dependsOn(buildWebApp, copyWebApp)
+    dependsOn(buildWebApp)
 }
 
 repositories {
@@ -63,6 +62,8 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    implementation("org.apache.commons:commons-lang3:3.15.0")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
